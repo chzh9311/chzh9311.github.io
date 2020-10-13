@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="BVH简介BVH是BioVision公司推出的一种人体动作捕捉文件格式。这种文件以节点为核心元素，记录连续数帧内人体骨架的运动。 BVH&#x3D;？研究一个东西的时候我比较喜欢先研究它的名字。BVH可以认为是BioVision Hierarchy的缩写，因为这类文件对节点的组织是按照树形结构来的，也就是层次化(hierarchical)的。关于这个名字还有另一种可能的解释：如果你去查询Blender的文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人体动作捕捉格式之BVH">
+<meta property="og:url" content="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/index.html">
+<meta property="og:site_name" content="Hysteresis.">
+<meta property="og:description" content="BVH简介BVH是BioVision公司推出的一种人体动作捕捉文件格式。这种文件以节点为核心元素，记录连续数帧内人体骨架的运动。 BVH&#x3D;？研究一个东西的时候我比较喜欢先研究它的名字。BVH可以认为是BioVision Hierarchy的缩写，因为这类文件对节点的组织是按照树形结构来的，也就是层次化(hierarchical)的。关于这个名字还有另一种可能的解释：如果你去查询Blender的文档">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/description.png">
+<meta property="article:published_time" content="2020-10-12T07:58:45.575Z">
+<meta property="article:modified_time" content="2020-09-09T03:30:39.923Z">
+<meta property="article:author" content="滞环">
+<meta property="article:tag" content="CV">
+<meta property="article:tag" content="Motion Capture">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/description.png">
+
+<link rel="canonical" href="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人体动作捕捉格式之BVH | Hysteresis.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hysteresis.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Some Notes, some thoughts.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人体动作捕捉格式之BVH
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-12 15:58:45" itemprop="dateCreated datePublished" datetime="2020-10-12T15:58:45+08:00">2020-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 11:30:39" itemprop="dateModified" datetime="2020-09-09T11:30:39+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">理论笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/%E5%8A%A8%E4%BD%9C%E6%8D%95%E6%8D%89/" itemprop="url" rel="index"><span itemprop="name">动作捕捉</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2c000qwwve1z066osx/BVH/" class="post-meta-item leancloud_visitors" data-flag-title="人体动作捕捉格式之BVH" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="BVH简介"><a href="#BVH简介" class="headerlink" title="BVH简介"></a>BVH简介</h2><p>BVH是BioVision公司推出的一种人体动作捕捉文件格式。这种文件以节点为核心元素，记录连续数帧内人体骨架的运动。</p>
+<h3 id="BVH-？"><a href="#BVH-？" class="headerlink" title="BVH=？"></a>BVH=？</h3><p>研究一个东西的时候我比较喜欢先研究它的名字。BVH可以认为是<em>BioVision Hierarchy</em>的缩写，因为这类文件对节点的组织是按照树形结构来的，也就是层次化(hierarchical)的。关于这个名字还有另一种可能的解释：如果你去查询Blender的文档，对BVH的介绍则将其等同于<em>BioVision Motion Capture</em>. 我倾向于前者，因为<strong>hierarchy</strong>这个词其实揭示了BVH的本质。</p>
+<p>把这类文件叫做BVH有一个最单纯最直接的原因，那就是<code>.bvh</code>是所有这类文件的统一后缀|·ω·)</p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>文件分为两大部分，<strong>层级结构</strong>和<strong>运动信息</strong>。下面是BVH的一个示例：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">HIERARCHY</span><br><span class="line">ROOT Hips</span><br><span class="line">&#123;</span><br><span class="line">    OFFSET  0.00    0.00    0.00</span><br><span class="line">    CHANNELS 6 Xposition Yposition Zposition Zrotation Xrotation Yrotation</span><br><span class="line">    JOINT Chest</span><br><span class="line">    &#123;</span><br><span class="line">        OFFSET   0.00    5.21    0.00</span><br><span class="line">        CHANNELS 3 Zrotation Xrotation Yrotation</span><br><span class="line">        JOINT Neck</span><br><span class="line">        &#123;</span><br><span class="line">            OFFSET   0.00    18.65   0.00</span><br><span class="line">            CHANNELS 3 Zrotation Xrotation Yrotation</span><br><span class="line">            JOINT Head</span><br><span class="line">            &#123;</span><br><span class="line">                OFFSET   0.00    5.45    0.00</span><br><span class="line">                CHANNELS 3 Zrotation Xrotation Yrotation</span><br><span class="line">                End Site </span><br><span class="line">                &#123;</span><br><span class="line">                    OFFSET   0.00    3.87    0.00</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        JOINT LeftCollar</span><br><span class="line">        &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MOTION</span><br><span class="line">Frames：    2</span><br><span class="line">Frame Time： 0.033333</span><br><span class="line"> 8.03    35.01   88.36  -3.41    14.78  -164.35  13.09   40.30  -24.60   7.88    43.80   0.00   -3.61   -41.45   5.82    10.08   0.00    10.21   97.95  -23.53  -2.14   -101.86 -80.77  -98.91   0.69    0.03    0.00   -14.04   0.00   -10.50  -85.52  -13.72  -102.93  61.91  -61.18   65.18  -1.57    0.69    0.02    15.00   22.78  -5.92    14.93   49.99   6.60    0.00   -1.14    0.00   -16.58  -10.51  -3.11    15.38   52.66  -21.80   0.00   -23.95   0.00   </span><br><span class="line"> 7.81    35.10   86.47  -3.78    12.94  -166.97  12.64   42.57  -22.34   7.67    43.61   0.00   -4.23   -41.41   4.89    19.10   0.00    4.16    93.12  -9.69   -9.43    132.67 -81.86   136.80  0.70    0.37    0.00   -8.62    0.00   -21.82  -87.31  -27.57  -100.09  56.17  -61.56   58.72  -1.63    0.95    0.03    13.16   15.44  -3.56    7.97    59.29   4.97    0.00    1.64    0.00   -17.18  -10.02  -3.08    13.56   53.38  -18.07   0.00   -25.93   0.00  </span><br></pre></td></tr></table></figure>
+<p>该文件是删减过的，为了显示清楚格式。<a target="_blank" rel="noopener" href="https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/Example1.bvh">&gt;点我&lt;</a> 看源文件。</p>
+<h3 id="层级结构"><a href="#层级结构" class="headerlink" title="层级结构"></a>层级结构</h3><p>首先<code>HIERARCHY</code>标记了层级结构部分的开始。</p>
+<p>可以跟着编译器的思路来理解这一部分：</p>
+<ul>
+<li>现在开始读这个文件啦，首先读到的是<code>ROOT</code>，这表示第一个节点是根节点。第一个节点总是根节点；</li>
+<li>往下读，读到了<code>Hips</code>这个词，结合上一条的信息，我们就知道了，根节点的名字是’Hips’。对于人体骨架来说，根节点一般都取在Hips也就是臀部。</li>
+<li>接着，出现了<code>&#123;</code>，左括号开始了，必然有右括号<code>&#125;</code>与之闭合，而括号之间的部分，既有节点，也有信息。我们可以理解为括号括起来的部分从属于刚刚读到的节点，这里是根节点<code>Hips</code>。</li>
+<li>下面读到一个关键字<code>OFFSET</code>。接下来会有三个数字，这里是<code>0.00 0.00 0.00</code>这表示该节点相对于父节点的偏移，也可以理解为从父节点到该节点连线所表征的向量。根节点没有父节点，所以这里是<strong>0</strong>.</li>
+<li>再读，读到<code>CHANNELS</code>这个关键词，那么这一行剩下的部分就是几个表示自由度的关键字，<code>Xrotation</code> <code>Yrotation</code> <code>Zrotation</code>表示了三个旋转自由度，<code>Xposition</code> <code>Yposition</code> <code>Zposition</code> 表示三个平移自由度。这一行表示刚才的根节点的自由度信息。<ul>
+<li>一般来说，根节点有全部的6个自由度，而其余节点只有3个旋转自由度。</li>
+<li>这些自由度的具体含义会放在后一节说明。</li>
+</ul>
+</li>
+<li>接着往下，读到了<code>JOINT</code> 这个关键字，这意味着这一行表示的是一个节点，后面的一个词<code>Chest</code>则是这个节点的名字。这个节点和根节点唯一的区别就是标记是<code>JOINT</code>而不是<code>ROOT</code>。</li>
+<li>下面又出现了<code>&#123;</code>，同样的，括号内的信息和子节点都从属于该节点。</li>
+<li>直到<code>End Site</code>出现前的部分都不需要赘述。<code>End Site</code>是一个无名节点，表示树形结构到这里就是叶节点啦，后面再也没有子节点了。<code>End Site</code>没有子节点，所有也就没有自由度信息，只有相对父节点的偏移信息。</li>
+<li>接下来读到了本文件第一个<code>&#125;</code>，表示一个节点的所有范围终结。</li>
+<li>下面再出现<code>JOINT</code>标记的节点时，我们回去找它在谁的括号内，它就是谁的子节点，以此类推，直到<code>MOTION</code>结束，因为这是下一部分开始的标志。</li>
+</ul>
+<h3 id="运动信息"><a href="#运动信息" class="headerlink" title="运动信息"></a>运动信息</h3><p>紧承前节，看到了<code>MOTION</code>这个关键字，就代表着运动信息的部分开始了。</p>
+<p>这一部分的结构要简单的多，就不像上一节那样介绍了：</p>
+<ul>
+<li>第二行<code>Frames：    2</code>表示帧数，这里是2帧；<ul>
+<li>这里的帧数必须与后面的帧数据行数相等，因为这个数字决定了要读取多少行，如果少了会造成数据浪费，多了就会出bug</li>
+</ul>
+</li>
+<li>第三行<code>Frame Time： 0.033333</code> 表示每一帧的持续时间，这里是$\frac{1}{30}\text{s}$，也就是这个文件是30FPS</li>
+<li>后面有n行运动数据，每行为一帧。这些信息按照<code>HIERARCHY</code>部分的自由度出现的顺序一一对应。其中角度的单位是度(°)</li>
+</ul>
+<h2 id="运动计算"><a href="#运动计算" class="headerlink" title="运动计算"></a>运动计算</h2><p>这一部分主要解决的问题是：如何通过BVH复现运动情况。这种旋转还是很抽象，要转化就要转化成人最方便理解的形式，那就是三维坐标。</p>
+<h3 id="自由度理解"><a href="#自由度理解" class="headerlink" title="自由度理解"></a>自由度理解</h3><p>首先要明确的是，这些参数的含义究竟是什么。</p>
+<p>如果在根节点<code>ROOT</code>建立全局坐标系，把<code>OFFSET</code>都作为相对这个全局坐标系的向量，那么仅凭<code>HIERARCHY</code>的信息是可以画出一个基本的骨架的。把这个骨架图起个名字叫$G_0$，后面还要再提到它。这种生成$G_0$的方法理论上没有问题，但是不能这么理解。BVH中每个节点都有自己的局部坐标系，所有的变换都是在局部坐标系完成的。只不过在$G_0$中，这些坐标系全部平行，局部坐标就等于全局坐标。</p>
+<p>注意，虽然这里我们画出了$G_0$，但这并不是初始的那一帧，只是一个基本的参考。运动信息部分中的每一帧都可以由这一帧的信息和$G_0$唯一地生成，<strong>没有记忆性</strong>，也就是说每一帧都是独立的。</p>
+<p>BVH的每个节点都有3个或6个自由度，这些自由度都是相对于初始坐标系（暨全局坐标系）而言的。平移自由度很好理解，就是沿着三个轴的偏移量；而旋转自由度则需要牵扯到3个点：当前节点O、子节点C、父节点P。如下图</p>
+<img src="/ckg7odi2c000qwwve1z066osx/BVH/description.png" class="" width="500" title="rotation">
+<p>这里要第一次强调<strong>hierarchy</strong>的含义了：每个节点的旋转，在自己的坐标系旋转的同时，带动所有子节点和相关骨骼的旋转。可以理解为按照层级从根到叶先后执行旋转，一个节点的局部坐标在旋转之前，始终和其父节点的局部坐标保持平行。</p>
+<p>按照这样一个过程，我们来理解一下旋转自由度的含义。在节点$O$旋转前，其局部坐标系$Oxyz$是和$Pxyz$完全平行的。三个自由度的含义是先后绕局部的$Oz$, $Ox$, $Oy$旋转的角度（这里以ZXY顺序为例）。注意，这里的单位是<strong>度（°）</strong>.</p>
+<p>旋转的结果不会体现在节点$O$上，而是体现在$C$及其后续节点的位移，即向量$\vec{OC}$的旋转。</p>
+<h3 id="递归计算"><a href="#递归计算" class="headerlink" title="递归计算"></a>递归计算</h3><p>这一部分主要讨论如何利用BVH中给出的信息，计算出每一帧所有节点的三维坐标序列。其核心是坐标变换的递归。</p>
+<p>这里要再一次强调<strong>hierarchy</strong>这个词。递归计算的核心就是对层级结构的利用。</p>
+<p>我们知道，如果一个坐标系$p$旋转之后得到了坐标系$q$，这一旋转过程的旋转矩阵可以表示为$R_{pq}$，而在这个空间内有一定点$A$，它在两个坐标系下的坐标分别是$A_p$和$A_q$,那么有如下关系成立：</p>
+<script type="math/tex; mode=display">
+A_p = R_{pq}A_q</script><p>这就是<strong>坐标变换公式</strong>。</p>
+<p>这里就有问题了。BVH中的旋转是向量在旋转，这个公式中$A$点根本就是一个定点，怎么能用来计算呢？</p>
+<p>其实在前一节，我们赋予了每个点一个单独的局部坐标系，并规定这个坐标系内，直接后继的坐标是不变的。这就是为了将坐标变换和向量旋转等同。可以分几步来理解这个计算过程（以父节点的坐标系为基准）：</p>
+<ol>
+<li><p>转之前的橙色坐标系（$\vec{OC}$所在的坐标系）记为$p$， 转之后的红色坐标系（$\vec{OC^\prime}$）记为$q$。</p>
+</li>
+<li><p>旋转前，所有坐标系都与全局坐标系等同，这就使得$\vec{OC^\prime_p}$实质上是$\vec{OC^\prime}$在全局坐标系下的坐标，也就是我们直接可以从坐标序列得出的$V_g$。旋转后的坐标系下，同一个向量$\vec{OC^\prime}$在$q$下的坐标实质上是基准帧内该向量的坐标，即$V$。</p>
+</li>
+<li><p>于是有了</p>
+<script type="math/tex; mode=display">
+\boldsymbol{V}_g=R\boldsymbol{V}</script></li>
+</ol>
+<p>我们再来理解递归的过程：在基准帧，当前节点以其父节点为基准执行旋转，得到向量$R_n\boldsymbol{V}$，这一向量的坐标是相对其父节点而言的；那么以父节点作为待处理的节点，继续执行这个过程，有了$R_{n-1}R_n\boldsymbol{V}$，以此类推。于是，某一节点的局部坐标到全局坐标的转化矩阵就可以写为</p>
+<script type="math/tex; mode=display">
+R=R_0R_1R_2\cdots R_n</script><p>为了不让这个式子看起来太复杂，我没在公式里显式指明旋转矩阵所在节点的从属关系。但是他们之间的关系应为：$R_{i+1}$是$R_i$的子节点。</p>
+<p>有了这个关系，$R_n$就可以递归求解。即，当我们知道$R_n$节点所有祖先节点的旋转矩阵，他们按照上面的顺序乘在一起得到的结果是$R_m$, 则成立以下式子：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{V}_g=R_mR_n\boldsymbol{V}</script><p>式中只有$R_n$是未知的。</p>
+<h2 id="The-End"><a href="#The-End" class="headerlink" title="The End"></a>The End</h2><p>最近在学习人体的动作捕捉，BVH和ASF/AMC是两种通用的并且以旋转为核心的格式。下一篇文章应该会用来讲后者，顺便做一做比较。</p>
+<p>文章内容依然是基于我个人理解，如有错误，万望指正。</p>
+<p>开学了，要收拾好心情：）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CV/" rel="tag"># CV</a>
+              <a href="/tags/Motion-Capture/" rel="tag"># Motion Capture</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ckg7odi2k0013wwveh7xbdtlz/result/" rel="prev" title="没有结果的奋斗，连被论英雄的机会都没有">
+      <i class="fa fa-chevron-left"></i> 没有结果的奋斗，连被论英雄的机会都没有
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BVH%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">BVH简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BVH-%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">BVH&#x3D;？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">层级结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E4%BF%A1%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text">运动信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">运动计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E7%94%B1%E5%BA%A6%E7%90%86%E8%A7%A3"><span class="nav-number">3.1.</span> <span class="nav-text">自由度理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E8%AE%A1%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">递归计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-End"><span class="nav-number">4.</span> <span class="nav-text">The End</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="滞环"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">滞环</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/chzh9311@163.com" title="E-Mail → chzh9311@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">滞环</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"2sLmRpBDUWbSnTsMCu4WXReA-gzGzoHsz","app_key":"AVoVVOLuijeiGXAFyWl3Q3m2","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

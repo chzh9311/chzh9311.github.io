@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hysteresis.">
+<meta property="og:url" content="http://blog.chzh9311.com/index.html">
+<meta property="og:site_name" content="Hysteresis.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="滞环">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.chzh9311.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hysteresis.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hysteresis.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Some Notes, some thoughts.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2c000qwwve1z066osx/BVH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2c000qwwve1z066osx/BVH/" class="post-title-link" itemprop="url">人体动作捕捉格式之BVH</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-12 15:58:45" itemprop="dateCreated datePublished" datetime="2020-10-12T15:58:45+08:00">2020-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 11:30:39" itemprop="dateModified" datetime="2020-09-09T11:30:39+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">理论笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/%E5%8A%A8%E4%BD%9C%E6%8D%95%E6%8D%89/" itemprop="url" rel="index"><span itemprop="name">动作捕捉</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2c000qwwve1z066osx/BVH/" class="post-meta-item leancloud_visitors" data-flag-title="人体动作捕捉格式之BVH" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="BVH简介"><a href="#BVH简介" class="headerlink" title="BVH简介"></a>BVH简介</h2><p>BVH是BioVision公司推出的一种人体动作捕捉文件格式。这种文件以节点为核心元素，记录连续数帧内人体骨架的运动。</p>
+<h3 id="BVH-？"><a href="#BVH-？" class="headerlink" title="BVH=？"></a>BVH=？</h3><p>研究一个东西的时候我比较喜欢先研究它的名字。BVH可以认为是<em>BioVision Hierarchy</em>的缩写，因为这类文件对节点的组织是按照树形结构来的，也就是层次化(hierarchical)的。关于这个名字还有另一种可能的解释：如果你去查询Blender的文档，对BVH的介绍则将其等同于<em>BioVision Motion Capture</em>. 我倾向于前者，因为<strong>hierarchy</strong>这个词其实揭示了BVH的本质。</p>
+<p>把这类文件叫做BVH有一个最单纯最直接的原因，那就是<code>.bvh</code>是所有这类文件的统一后缀|·ω·)</p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>文件分为两大部分，<strong>层级结构</strong>和<strong>运动信息</strong>。下面是BVH的一个示例：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ckg7odi2c000qwwve1z066osx/BVH/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2k0013wwveh7xbdtlz/result/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2k0013wwveh7xbdtlz/result/" class="post-title-link" itemprop="url">没有结果的奋斗，连被论英雄的机会都没有</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-24 22:07:59" itemprop="dateCreated datePublished" datetime="2020-09-24T22:07:59+08:00">2020-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-27 15:38:11" itemprop="dateModified" datetime="2020-09-27T15:38:11+08:00">2020-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B2%89%E9%99%8D/" itemprop="url" rel="index"><span itemprop="name">沉降</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2k0013wwveh7xbdtlz/result/" class="post-meta-item leancloud_visitors" data-flag-title="没有结果的奋斗，连被论英雄的机会都没有" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>很抱歉一上来就这么负能量，但这也是必须时刻清醒意识到的事实。请耐心看下去，我并不是消极厌世的人，我只想打消自己对世界的幻想。事先声明，因为人各有各的活法，如果你觉得自己现在的状态挺好，也没有什么别的欲求，这样生活也很好呀。不过，这样就没有必要再读下去了：)否则就是价值观的冲突了。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ckg7odi2k0013wwveh7xbdtlz/result/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2c000pwwvefo9a76a1/20-9-13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2c000pwwvefo9a76a1/20-9-13/" class="post-title-link" itemprop="url">20-9-13</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-13 22:35:43" itemprop="dateCreated datePublished" datetime="2020-09-13T22:35:43+08:00">2020-09-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-15 09:41:17" itemprop="dateModified" datetime="2020-09-15T09:41:17+08:00">2020-09-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%9F%E5%85%89/" itemprop="url" rel="index"><span itemprop="name">星光</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2c000pwwvefo9a76a1/20-9-13/" class="post-meta-item leancloud_visitors" data-flag-title="20-9-13" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天看到了第二个《三国演义》第二大名场面——诸葛琴魔，看的也是真的挺欢乐的。（第一名场面骂死王朗几天前看过了。</p>
+<img src="/ckg7odi2c000pwwvefo9a76a1/20-9-13/screenshot.jpg" class="">
+<p>但是抛却鬼畜素材不谈，这一集诸葛亮挥泪斩马谡、空城退司马，唐国强老师确实把诸葛亮演活了。尤其在得知马谡未听自己的忠告而屯兵山顶时，气到将地图扫下桌面，老师演技之妙，我忍不住倒回去又看了一遍。</p>
+<p>另外，今日原神开放预下载了，hhh有一种仿佛已经玩到了的喜悦。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2b000owwve73qu6rlx/20-9-12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2b000owwve73qu6rlx/20-9-12/" class="post-title-link" itemprop="url">20-9-12</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-12 23:05:59 / 修改时间：23:17:13" itemprop="dateCreated datePublished" datetime="2020-09-12T23:05:59+08:00">2020-09-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%9F%E5%85%89/" itemprop="url" rel="index"><span itemprop="name">星光</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2b000owwve73qu6rlx/20-9-12/" class="post-meta-item leancloud_visitors" data-flag-title="20-9-12" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天专心时间235min，不算非常长，但是有每一分钟都用来复习哦。很充实的感觉。</p>
+<img src="/ckg7odi2b000owwve73qu6rlx/20-9-12/forest.jpg" class="" width="300">
+<p>晚上糖豆人局也很开心。</p>
+<p>《致不灭的你》真的好看，这种画面优美，分镜有张力，剧情有深度的漫画作品真的不可多得呀，还是我最爱的幻想风格，我要去剁手买掉剩下的了。放一张漫画原图在这里：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ckg7odi2b000owwve73qu6rlx/20-9-12/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2a000nwwvehdnh49ns/20-9-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2a000nwwvehdnh49ns/20-9-11/" class="post-title-link" itemprop="url">20-9-11</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-11 22:51:01" itemprop="dateCreated datePublished" datetime="2020-09-11T22:51:01+08:00">2020-09-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%9F%E5%85%89/" itemprop="url" rel="index"><span itemprop="name">星光</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2a000nwwvehdnh49ns/20-9-11/" class="post-meta-item leancloud_visitors" data-flag-title="20-9-11" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>《灵笼》更新啦，虽然<del>身为尘民</del>没有大会员的我只能看第9集，但是已经很棒啦，等完结了我再充，不急。</p>
+<p>这一集音乐真的震撼呀，尤其是包含情感的人声，和悲壮的主题相得益彰。</p>
+<p>末世题材真的是一个很棒的背景，棒就棒在，在天灾的大背景下，不需要阴谋论，也可以有跌宕起伏的剧情。人们有共同的敌人，每个人都是征战沙场的勇士。</p>
+<p>但是不得不说，这种题材下，刀片是真的多。</p>
+<p>End.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi240008wwveh9v3dbkp/20-9-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi240008wwveh9v3dbkp/20-9-10/" class="post-title-link" itemprop="url">20-9-10</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-10 22:44:56 / 修改时间：22:46:30" itemprop="dateCreated datePublished" datetime="2020-09-10T22:44:56+08:00">2020-09-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%9F%E5%85%89/" itemprop="url" rel="index"><span itemprop="name">星光</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi240008wwveh9v3dbkp/20-9-10/" class="post-meta-item leancloud_visitors" data-flag-title="20-9-10" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天知道了夏令营考试范围，嵌入式不考，真好，不用管什么基址变址隐含寻访寄存器了。</p>
+<p>但说实话是有些险的，如果不是问了别人我就跟寄存器死磕了。</p>
+<p>我有时也在想为什么我对人际距离一直这么谨慎，自己也不想太高冷，但是总感觉无意间似乎把其他人想要拉近距离的举动给隔离了。</p>
+<p>今天了解了一个词叫“依赖无能”，好像和自己的状态类似。尤其是在peer pressure 下，更难和比自己优秀（至少看起来是）的人拉近距离吧。潜意识可能难以修正，但是可以从小事开始，因为私事去麻烦麻烦那些并不是很熟悉的人，付出一点勇气，也许就能换来一个好的开端。</p>
+<p>好像和主题有些偏了，但是这个系列应当不是“快乐”这么简单，只要是积极的，都可以收录，更何况，本来就是精简版的日记。</p>
+<p>今天下雨了，虽然回来的时候有些狼狈，但好歹下了，终于要凉快一些了：）</p>
+<p>Fin.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2g000ywwve657o6ljr/preface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2g000ywwve657o6ljr/preface/" class="post-title-link" itemprop="url">Preface</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-09 21:52:20 / 修改时间：23:29:23" itemprop="dateCreated datePublished" datetime="2020-09-09T21:52:20+08:00">2020-09-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%9F%E5%85%89/" itemprop="url" rel="index"><span itemprop="name">星光</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2g000ywwve657o6ljr/preface/" class="post-meta-item leancloud_visitors" data-flag-title="Preface" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这个系列并不是一个正式的博文系列，类似于日记，但是比日记更精简。更重要的是，内容都是积极向上的：今日份最大的快乐。</p>
+<p>至于为什么开始这个系列，要从一日晚上的C菌直播说起。那天C菌和一名在某美国名校（我真忘记了抱歉）读phD的舰长连麦，她说到的一个让自己越来越积极的方法，便是，每天都将自己最快乐的事情记录下来。记录和脑内过一遍的感觉是完全不同的，只要认真对待，这就是一种可以影响潜意识的仪式。</p>
+<p>这个系列取名“星光”，颇有星星之火可以燎原之意，至于为什么不叫星火，害，星火不是卖英语练习册的吗？</p>
+<p>另外，我本来并不想让这个系列显示在主页，因为确实会很乱。但是后来想了想，公开了也罢，个人博客如果点开全都是晦涩的技术词汇，就真的成了为求职而生的了。（PS：其实是我不知道怎么隐藏orz）</p>
+<p>今日最快乐的事情，当然是我开启了这个系列呀。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2e000swwve6s393bda/EulerAngle/" class="post-title-link" itemprop="url">欧拉角和旋转矩阵的相互转化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 01:38:18" itemprop="dateCreated datePublished" datetime="2020-08-01T01:38:18+08:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-18 16:22:17" itemprop="dateModified" datetime="2020-09-18T16:22:17+08:00">2020-09-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">理论笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2/" itemprop="url" rel="index"><span itemprop="name">坐标变换</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2e000swwve6s393bda/EulerAngle/" class="post-meta-item leancloud_visitors" data-flag-title="欧拉角和旋转矩阵的相互转化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="欧拉角定义"><a href="#欧拉角定义" class="headerlink" title="欧拉角定义"></a>欧拉角定义</h2><p>欧拉角(Euler Angle)，由著名数学家莱昂哈德·欧拉(1707-1783)提出，故而得名。欧拉角旨在用三个角度来表示刚体在三维空间的旋转。这种表示方法经历了3个世纪，其实已经非常古老了，自身有一些局限性，塞利斯基（Richard Szeliski）所著《计算机视觉：算法与应用》一书中对欧拉角甚至只是一笔带过。但是欧拉角现在依然在广泛使用，因此仍然有深入学习的必要。</p>
+<p>首先我们统一符号:</p>
+<ul>
+<li>$Oxyz$是世界坐标系，是固定不变的。</li>
+<li>$OXYZ$是被旋转的局部坐标系。</li>
+</ul>
+<p>欧拉角的定义分为静态定义和动态定义。百度上说的很复杂，两种定义方式并没有给出很明确的区分，但是对我们计算需求而言，只需要一点区分就可以了，那就是：旋转是基于全局坐标系还是局部坐标系。</p>
+<h3 id="基于局部坐标系的旋转"><a href="#基于局部坐标系的旋转" class="headerlink" title="基于局部坐标系的旋转"></a>基于局部坐标系的旋转</h3><p>有点“我绕着自己转”的意思。</p>
+<p>最典型的欧拉角旋转为$z-X-Z$顺序，即刚体先后绕$z, X, Z$轴旋转角度$\alpha, \beta, \gamma$。注意字母<strong>大小写</strong>，即最开始是绕全局坐标系的$z$轴旋转，之后按顺序绕自己局部坐标系的$X$轴和$Z$轴旋转，考虑到最开始两个坐标系是重合的，即$z=Z$，这种旋转顺序也可以理解为$ZXZ$。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ckg7odi2e000swwve6s393bda/EulerAngle/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2f000vwwvebcho4o3p/PathDisplay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/ckg7odi2f000vwwvebcho4o3p/PathDisplay/" class="post-title-link" itemprop="url">RVIZ中利用markers标记历史路径（超详细）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-10 16:20:11" itemprop="dateCreated datePublished" datetime="2020-07-10T16:20:11+08:00">2020-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 11:30:24" itemprop="dateModified" datetime="2020-09-09T11:30:24+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E5%AE%9E%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">操作实录</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2f000vwwvebcho4o3p/PathDisplay/" class="post-meta-item leancloud_visitors" data-flag-title="RVIZ中利用markers标记历史路径（超详细）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近有道作业题需要将机器人的历史路径显示出来，但是网上很多相关的教程都是搬运了官网的链接，并没有详细的操作流程。。。因此我又花费了很多时间去ros官网上学习marker的用法，学习怎么写publisher和subscriber，最终成功将路径显示了出来。这篇文章是对这个过程的详细的介绍，原理和代码实践部分会分开，因此如果你赶时间只要一个结果的话，把详细的讲解跳过即可。不过我还是推荐看完，毕竟<del>我花了这么多精力来写</del>知其然也要知其所以然。</p>
+<p>（我是ROS新手，从作业这一点也应该看出来了XD，有不对的地方欢迎指正）</p>
+<h2 id="你应该已经完成了的准备工作"><a href="#你应该已经完成了的准备工作" class="headerlink" title="你应该已经完成了的准备工作"></a>你应该已经完成了的准备工作</h2><ul>
+<li>已经配置好了ROS工作环境。这一点不用多说，参考<a target="_blank" rel="noopener" href="http://wiki.ros.org">ROS wiki</a>。</li>
+<li>这里我用的是Gazebo仿真环境和RVIZ可视化工具，这两个东西是安装ros时用官网上那个最全的安装包里自带（这里展示的是kinetic版本的安装命令，其他的版本到上面的链接里面找）：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt install ros-kinetic-desktop-full</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>已经跟着ROS wiki建立了catkin工作区，我这里的工作区就是wiki上的<code>~/catkin_ws</code>，如果你的不是在用户根目录下记得在后面执行命令的时候改掉。</p>
+</li>
+<li><p>工作区目录下的<code>src</code>目录在系统的<code>ROS_PACKAGE_PATH</code>环境变量中，不在的话可以这样设置：</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> ROS_PACKAGE_PATH=<span class="variable">$&#123;ROS_PACKAEG_PATH&#125;</span>:<span class="variable">$&#123;HOME&#125;</span>/catkin_ws/src</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ckg7odi2f000vwwvebcho4o3p/PathDisplay/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="滞环"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">滞环</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/chzh9311@163.com" title="E-Mail → chzh9311@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">滞环</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"2sLmRpBDUWbSnTsMCu4WXReA-gzGzoHsz","app_key":"AVoVVOLuijeiGXAFyWl3Q3m2","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

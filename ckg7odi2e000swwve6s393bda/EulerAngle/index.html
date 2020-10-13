@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="欧拉角定义欧拉角(Euler Angle)，由著名数学家莱昂哈德·欧拉(1707-1783)提出，故而得名。欧拉角旨在用三个角度来表示刚体在三维空间的旋转。这种表示方法经历了3个世纪，其实已经非常古老了，自身有一些局限性，塞利斯基（Richard Szeliski）所著《计算机视觉：算法与应用》一书中对欧拉角甚至只是一笔带过。但是欧拉角现在依然在广泛使用，因此仍然有深入学习的必要。 首先我们统一符">
+<meta property="og:type" content="article">
+<meta property="og:title" content="欧拉角和旋转矩阵的相互转化">
+<meta property="og:url" content="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/index.html">
+<meta property="og:site_name" content="Hysteresis.">
+<meta property="og:description" content="欧拉角定义欧拉角(Euler Angle)，由著名数学家莱昂哈德·欧拉(1707-1783)提出，故而得名。欧拉角旨在用三个角度来表示刚体在三维空间的旋转。这种表示方法经历了3个世纪，其实已经非常古老了，自身有一些局限性，塞利斯基（Richard Szeliski）所著《计算机视觉：算法与应用》一书中对欧拉角甚至只是一笔带过。但是欧拉角现在依然在广泛使用，因此仍然有深入学习的必要。 首先我们统一符">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/Coordinate3D.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/Eulerangles.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/dynamic.png">
+<meta property="article:published_time" content="2020-07-31T17:38:18.000Z">
+<meta property="article:modified_time" content="2020-09-18T08:22:17.724Z">
+<meta property="article:author" content="滞环">
+<meta property="article:tag" content="CV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/Coordinate3D.png">
+
+<link rel="canonical" href="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>欧拉角和旋转矩阵的相互转化 | Hysteresis.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hysteresis.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Some Notes, some thoughts.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckg7odi2e000swwve6s393bda/EulerAngle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          欧拉角和旋转矩阵的相互转化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 01:38:18" itemprop="dateCreated datePublished" datetime="2020-08-01T01:38:18+08:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-18 16:22:17" itemprop="dateModified" datetime="2020-09-18T16:22:17+08:00">2020-09-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">理论笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2/" itemprop="url" rel="index"><span itemprop="name">坐标变换</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/ckg7odi2e000swwve6s393bda/EulerAngle/" class="post-meta-item leancloud_visitors" data-flag-title="欧拉角和旋转矩阵的相互转化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="欧拉角定义"><a href="#欧拉角定义" class="headerlink" title="欧拉角定义"></a>欧拉角定义</h2><p>欧拉角(Euler Angle)，由著名数学家莱昂哈德·欧拉(1707-1783)提出，故而得名。欧拉角旨在用三个角度来表示刚体在三维空间的旋转。这种表示方法经历了3个世纪，其实已经非常古老了，自身有一些局限性，塞利斯基（Richard Szeliski）所著《计算机视觉：算法与应用》一书中对欧拉角甚至只是一笔带过。但是欧拉角现在依然在广泛使用，因此仍然有深入学习的必要。</p>
+<p>首先我们统一符号:</p>
+<ul>
+<li>$Oxyz$是世界坐标系，是固定不变的。</li>
+<li>$OXYZ$是被旋转的局部坐标系。</li>
+</ul>
+<p>欧拉角的定义分为静态定义和动态定义。百度上说的很复杂，两种定义方式并没有给出很明确的区分，但是对我们计算需求而言，只需要一点区分就可以了，那就是：旋转是基于全局坐标系还是局部坐标系。</p>
+<h3 id="基于局部坐标系的旋转"><a href="#基于局部坐标系的旋转" class="headerlink" title="基于局部坐标系的旋转"></a>基于局部坐标系的旋转</h3><p>有点“我绕着自己转”的意思。</p>
+<p>最典型的欧拉角旋转为$z-X-Z$顺序，即刚体先后绕$z, X, Z$轴旋转角度$\alpha, \beta, \gamma$。注意字母<strong>大小写</strong>，即最开始是绕全局坐标系的$z$轴旋转，之后按顺序绕自己局部坐标系的$X$轴和$Z$轴旋转，考虑到最开始两个坐标系是重合的，即$z=Z$，这种旋转顺序也可以理解为$ZXZ$。</p>
+<a id="more"></a>
+<p>这种旋转的流程如图所示。每张图中的红色椭圆代表了旋转轴的法平面。</p>
+<img src="/ckg7odi2e000swwve6s393bda/EulerAngle/Coordinate3D.png" class="" width="900" title="First">
+<p>在维基百科的对欧拉角的解读中，有一张将过程整合的图，百度上也有但是清晰度要差很多。</p>
+<img src="/ckg7odi2e000swwve6s393bda/EulerAngle/Eulerangles.png" class="" width="500" height="500" title="EulerAngle">
+<h3 id="基于全局坐标系的旋转"><a href="#基于全局坐标系的旋转" class="headerlink" title="基于全局坐标系的旋转"></a>基于全局坐标系的旋转</h3><p>这种旋转非常好理解，世界坐标系是不变的，刚体的局部坐标系先后绕三个固定的轴作旋转，就是这种欧拉角的效果了。同样的，用分布图解来看，下图显示了顺序为$z-x-y$的欧拉角所展示的结果：</p>
+<img src="/ckg7odi2e000swwve6s393bda/EulerAngle/dynamic.png" class="" width="900" title="Dynamic definition">
+<h2 id="三维旋转矩阵"><a href="#三维旋转矩阵" class="headerlink" title="三维旋转矩阵"></a>三维旋转矩阵</h2><h3 id="基本旋转矩阵"><a href="#基本旋转矩阵" class="headerlink" title="基本旋转矩阵"></a>基本旋转矩阵</h3><p>如果考虑一个很简单的旋转，这个旋转简单到只是绕着某个坐标轴旋转一个角度$\theta$，绕着转的坐标轴所对应的坐标就不会有任何变化，而我们已经知道，二维平面的旋转矩阵是这样的：</p>
+<script type="math/tex; mode=display">
+R(\theta)=\left[\begin{matrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta \\
+\end{matrix}\right]</script><p>那第三个维度只要保持不变就好了。这就不难理解绕着三个基本坐标轴旋转特定角度所对应的旋转矩阵：</p>
+<script type="math/tex; mode=display">
+R_x(\psi)=\left[\begin{matrix}
+1 & 0 & 0 \\
+0 & \cos\psi & -\sin\psi \\
+0 & \sin\psi & \cos\psi
+\end{matrix}\right] \\
+R_y(\theta)=\left[\begin{matrix}
+\cos\theta & 0 & \sin\theta \\
+0 & 1 & 0 \\
+-\sin\theta & 0 & \cos\theta
+\end{matrix}\right] \\
+R_z(\varphi)=\left[\begin{matrix}
+\cos\varphi & -\sin\varphi & 0 \\
+\sin\varphi & \cos\varphi & 0 \\
+0 & 0 & 1
+\end{matrix}\right]</script><p>至此，有一个十分关键的点，就是这三个旋转矩阵的适用前提都是<strong>刚体的旋转轴是定义坐标时用的坐标系</strong>。这很好理解，毕竟这几个矩阵乘以三维向量后，都会有一个坐标值是不改变的，那么旋转就一定是绕这个轴进行的。</p>
+<h2 id="旋转矩阵和两种欧拉角"><a href="#旋转矩阵和两种欧拉角" class="headerlink" title="旋转矩阵和两种欧拉角"></a>旋转矩阵和两种欧拉角</h2><p>这里的两种欧拉角并不是指两种定义方式，而是上面说的两种参照，是绕自己的轴转，还是绕全局的轴转。</p>
+<p>除了旋转方式的差异，我们所诉求的坐标不同也会导致结果的不同。有两种诉求：转向量和转坐标系。前者是旋转向量，同时带动向量的局部坐标系旋转；后者则是旋转局部坐标系，待求的向量在全局坐标系下是保持不变的。有趣的是，如果在转向量时，把局部坐标系作为我们的参考，那么就可以等效为响亮不动而转坐标系的情况。下面先说点固定不动，而转坐标系的情形下，怎么求<strong>局部坐标的变换矩阵</strong>。</p>
+<p>规定一些事情以便比较：</p>
+<ul>
+<li><p>最开始全局坐标系和局部坐标系是重合的；</p>
+</li>
+<li><p>旋转的顺序都是$xyz(XYZ)$；</p>
+</li>
+<li>旋转角保持和前面一节一致：分别是$\psi, \theta, \varphi$.</li>
+</ul>
+<h3 id="绕局部坐标轴旋转"><a href="#绕局部坐标轴旋转" class="headerlink" title="绕局部坐标轴旋转"></a>绕局部坐标轴旋转</h3><p>如果旋转是绕着局部坐标系进行的，所有的坐标又都是或可以看成局部坐标系，那么我们就可以当全局坐标系不存在。假设变换前后的固定点在局部坐标系下的坐标分别是$P_0$和$P_1$.</p>
+<p>第一步绕x轴旋转$\psi$角度，对应的旋转矩阵即为两者之间的坐标变换矩阵：</p>
+<script type="math/tex; mode=display">
+R_xP_x=P_0</script><p>注意变换矩阵的位置，是乘在变换后的$P_x$的左边。同理：</p>
+<script type="math/tex; mode=display">
+R_yP_{xy}=P_x \\
+R_zP_{xyz}=P_{xy}</script><p>其中$P_{xyz}=P_{1}$.</p>
+<p>三个式子迭代，就得到了</p>
+<script type="math/tex; mode=display">
+R_xR_yR_zP_1=P_0</script><p>两者之间最终的坐标变换矩阵最终是这样的：</p>
+<script type="math/tex; mode=display">
+R_{local}=R_xR_yR_z</script><p>反直觉的是，如果把$P_1$和$P_0$的关系换一种方法写：</p>
+<script type="math/tex; mode=display">
+P_1=R_z^TR_y^TR_x^TP_0</script><p>分开的三个矩阵的作用顺序是指定的x-y-z，但他们是以转置，也就是逆矩阵的形式作用在$P_0$上的。</p>
+<p>下面问题来了，是不是绕全局坐标系旋转，他们就会以原形式作用呢？往下看。</p>
+<h3 id="绕全局坐标轴旋转"><a href="#绕全局坐标轴旋转" class="headerlink" title="绕全局坐标轴旋转"></a>绕全局坐标轴旋转</h3><p>如果我们分步来看这个过程，会发现绕$x$的轴旋转完成后，两个坐标系不重合，我们的坐标都是被旋转的局部坐标系下的，而前面给出的绕坐标轴的旋转矩阵能够作用的前提是<strong>转轴是定义坐标所使用的坐标系的坐标轴</strong>，这一条件不成立，就无法使用上面的简单形式。<br>问题的本质是得到每一步相应的旋转矩阵。第一步与绕局部坐标旋转的情形无异：</p>
+<script type="math/tex; mode=display">
+R_xP_x=P_0</script><p>然而，接下来就不能直接用前面求得的$R_y(\theta)$了，因为旋转轴不是局部坐标系的$Y$轴了。我们需要把全局坐标系的$y$轴正方向在局部坐标系中用单位向量$\boldsymbol{n}_y$表示出来，经过旋转我们很好求得：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{n}_y=R_x^T\left[0\quad 1\quad 0\right]^T \\</script><p>第二步的坐标变换矩阵就变成了绕$\boldsymbol{n}_y$旋转角度$\theta$。对应的旋转矩阵很好计算但形式会比较复杂，记为$R_{xy}$，那么第二步的转化可以写成</p>
+<script type="math/tex; mode=display">
+R_{xy}P_{xy}=P_x</script><p>同理，最后一步，需要得到两步旋转后全局$z$轴同向的$\boldsymbol{n}_z$.</p>
+<script type="math/tex; mode=display">
+\boldsymbol{n}_z=R_{xy}^TR_x^T[0\quad 0\quad 1]^T</script><p>绕$\boldsymbol{n}_z$旋转角度$\varphi$的矩阵是$R_{xyz}$，那么</p>
+<script type="math/tex; mode=display">
+R_{xyz}P_{xyz}=P_{xy}</script><p>坐标变换矩阵就是：</p>
+<script type="math/tex; mode=display">
+R_{global}=R_xR_{xy}R_{xyz}</script><p><del>这可比上一种情形要复杂得多，这也是为什么一般都用欧拉角的静态定义。</del></p>
+<h4 id="勘误"><a href="#勘误" class="headerlink" title="勘误"></a>勘误</h4><p>实际上绕全局固定坐标系旋转的欧拉角可以有更好的表达形式，上述的表达我认为是对的，但是没有什么实际意义。正式应用中，这种绕全局坐标轴旋转的欧拉角叫做”RPY”(Roll, Pitch, Yaw)。先给出旋转矩阵的形式（按照$x-y-z$的顺序旋转）：</p>
+<script type="math/tex; mode=display">
+R_{global}=R_zR_yR_x</script><p>证明的话，可以从坐标变换的根本出发，即基底变换。全局坐标系的基底为：</p>
+<script type="math/tex; mode=display">
+[\boldsymbol{\varepsilon}_1\quad\boldsymbol{\varepsilon}_2\quad\boldsymbol{\varepsilon}_3]=
+\left[\begin{matrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{matrix}\right] \\</script><p>在全局坐标系中的坐标为</p>
+<p>三个基底都可以作为单独的向量。在对目标局部坐标系进行旋转时，对每个基底的旋转是等同的。最开始，目标基底和全局基底相等。本质上是对向量的旋转，以$\boldsymbol{\varepsilon}_1$为例，首先绕x轴旋转，得到了$R_x\boldsymbol{\varepsilon}_1$为新的基向量；下一步绕y轴旋转，得到了$R_y(R_x\boldsymbol{\varepsilon}_1)$；最后得到的是</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\varepsilon}_1^\prime=R_zR_yR_x\boldsymbol{\varepsilon}_1</script><p>因此，我们可以发现基底的变换满足：</p>
+<script type="math/tex; mode=display">
+[\boldsymbol{\varepsilon}_1^\prime\quad\boldsymbol{\varepsilon}_2^\prime\quad\boldsymbol{\varepsilon}_3^\prime]=R_zR_yR_x[\boldsymbol{\varepsilon}_1\quad\boldsymbol{\varepsilon}_2\quad\boldsymbol{\varepsilon}_3]</script><p>这就可以直接作为坐标系之间的旋转变换关系了。</p>
+<p>事实上，考虑到$[\boldsymbol{\varepsilon}_1\quad\boldsymbol{\varepsilon}_2\quad\boldsymbol{\varepsilon}_3]=I$，上面的等式可以表达为更简单的形式：</p>
+<script type="math/tex; mode=display">
+[\boldsymbol{\varepsilon}_1^\prime\quad\boldsymbol{\varepsilon}_2^\prime\quad\boldsymbol{\varepsilon}_3^\prime]=R_zR_yR_x</script><p>如果我们进一步想由此写出坐标转换关系，那么根据基底和坐标的关系：</p>
+<script type="math/tex; mode=display">
+[\boldsymbol{\varepsilon}_1^\prime\quad\boldsymbol{\varepsilon}_2^\prime\quad\boldsymbol{\varepsilon}_3^\prime]P_1=[\boldsymbol{\varepsilon}_1\quad\boldsymbol{\varepsilon}_2\quad\boldsymbol{\varepsilon}_3]P_0</script><p>即</p>
+<script type="math/tex; mode=display">
+R_zR_yR_xP_1=P_0</script><h3 id="转向量的情形"><a href="#转向量的情形" class="headerlink" title="转向量的情形"></a>转向量的情形</h3><p>针对向量的旋转问题中，我们更多关注的是：一个向量$P_0$经过指定的旋转之后，得到的向量在原坐标系下的坐标$P_1$。如果绕全局坐标系旋转，这个转换就很直接了（依然是按照$x-y-z$)的顺序：</p>
+<script type="math/tex; mode=display">
+P_1=R_zR_yR_xP_0</script><p>而如果我们在转动向量的时候，是以其局部坐标为基准的（不要以为这种<del>反人类的</del>旋转方式不存在，事实上，BVH中的节点旋转就可以说是这么定义的），那么可以逆向思考，即把这个旋转问题转化为坐标转换矩阵的求解。如果我们以局部坐标系为参考，那么旋转过程中向量的坐标是不变的，旋转等价于绕固定的三个轴对全局坐标系作<strong>方向相反</strong>的旋转。根据上面的求解的结果，我们知道坐标转换关系是：</p>
+<script type="math/tex; mode=display">
+R_z^TR_y^TR_x^TP_1=P_0</script><p>于是：</p>
+<script type="math/tex; mode=display">
+P_1=R_xR_yR_zP_0</script><h2 id="The-End"><a href="#The-End" class="headerlink" title="The End"></a>The End</h2><p>这四种情形之间关系很密切，非常的绕……由于之前在处理BVH(BioVision Hierarchy)文件时，一直对文件里的三轴旋转理解有问题，所以查了很多资料，整理了一下。</p>
+<font color='gray' size=2>本文基于个人理解，可能会有错误；~~如有雷同，是他抄我~~ ，怎么会雷同呢，真是的:-/</font>
+
+<p>三张图片，除了第二章整合过程图是在<a target="_blank" rel="noopener" href="https://commons.wikimedia.org/wiki/File:Euler.png">维基百科</a>上下载的，其他的两张分步过程图都是原创，要使用的话请注明出处：）</p>
+<p>Thx.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CV/" rel="tag"># CV</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ckg7odi2f000vwwvebcho4o3p/PathDisplay/" rel="prev" title="RVIZ中利用markers标记历史路径（超详细）">
+      <i class="fa fa-chevron-left"></i> RVIZ中利用markers标记历史路径（超详细）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ckg7odi2g000ywwve657o6ljr/preface/" rel="next" title="Preface">
+      Preface <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E8%A7%92%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">欧拉角定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%B1%80%E9%83%A8%E5%9D%90%E6%A0%87%E7%B3%BB%E7%9A%84%E6%97%8B%E8%BD%AC"><span class="nav-number">1.1.</span> <span class="nav-text">基于局部坐标系的旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%85%A8%E5%B1%80%E5%9D%90%E6%A0%87%E7%B3%BB%E7%9A%84%E6%97%8B%E8%BD%AC"><span class="nav-number">1.2.</span> <span class="nav-text">基于全局坐标系的旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="nav-number">2.</span> <span class="nav-text">三维旋转矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="nav-number">2.1.</span> <span class="nav-text">基本旋转矩阵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5%E5%92%8C%E4%B8%A4%E7%A7%8D%E6%AC%A7%E6%8B%89%E8%A7%92"><span class="nav-number">3.</span> <span class="nav-text">旋转矩阵和两种欧拉角</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%95%E5%B1%80%E9%83%A8%E5%9D%90%E6%A0%87%E8%BD%B4%E6%97%8B%E8%BD%AC"><span class="nav-number">3.1.</span> <span class="nav-text">绕局部坐标轴旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%95%E5%85%A8%E5%B1%80%E5%9D%90%E6%A0%87%E8%BD%B4%E6%97%8B%E8%BD%AC"><span class="nav-number">3.2.</span> <span class="nav-text">绕全局坐标轴旋转</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8B%98%E8%AF%AF"><span class="nav-number">3.2.1.</span> <span class="nav-text">勘误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E5%90%91%E9%87%8F%E7%9A%84%E6%83%85%E5%BD%A2"><span class="nav-number">3.3.</span> <span class="nav-text">转向量的情形</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-End"><span class="nav-number">4.</span> <span class="nav-text">The End</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="滞环"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">滞环</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/chzh9311@163.com" title="E-Mail → chzh9311@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">滞环</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"2sLmRpBDUWbSnTsMCu4WXReA-gzGzoHsz","app_key":"AVoVVOLuijeiGXAFyWl3Q3m2","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
