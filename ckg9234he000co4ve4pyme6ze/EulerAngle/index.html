@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://blog.chzh9311.com/ckg9234he000co4ve4pyme6ze/EulerAngle/Eulerangles.png">
 <meta property="og:image" content="http://blog.chzh9311.com/ckg9234he000co4ve4pyme6ze/EulerAngle/dynamic.png">
 <meta property="article:published_time" content="2020-07-31T17:38:18.000Z">
-<meta property="article:modified_time" content="2020-09-18T08:22:17.724Z">
+<meta property="article:modified_time" content="2020-10-24T10:44:12.843Z">
 <meta property="article:author" content="滞环">
 <meta property="article:tag" content="CV">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-18 16:22:17" itemprop="dateModified" datetime="2020-09-18T16:22:17+08:00">2020-09-18</time>
+                <time title="修改时间：2020-10-24 18:44:12" itemprop="dateModified" datetime="2020-10-24T18:44:12+08:00">2020-10-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,12 +245,12 @@ R_x(\psi)=\left[\begin{matrix}
 1 & 0 & 0 \\
 0 & \cos\psi & -\sin\psi \\
 0 & \sin\psi & \cos\psi
-\end{matrix}\right] \\
+\end{matrix}\right]</script><script type="math/tex; mode=display">
 R_y(\theta)=\left[\begin{matrix}
 \cos\theta & 0 & \sin\theta \\
 0 & 1 & 0 \\
 -\sin\theta & 0 & \cos\theta
-\end{matrix}\right] \\
+\end{matrix}\right]</script><script type="math/tex; mode=display">
 R_z(\varphi)=\left[\begin{matrix}
 \cos\varphi & -\sin\varphi & 0 \\
 \sin\varphi & \cos\varphi & 0 \\
@@ -271,7 +271,7 @@ R_z(\varphi)=\left[\begin{matrix}
 <script type="math/tex; mode=display">
 R_xP_x=P_0</script><p>注意变换矩阵的位置，是乘在变换后的$P_x$的左边。同理：</p>
 <script type="math/tex; mode=display">
-R_yP_{xy}=P_x \\
+R_yP_{xy}=P_x</script><script type="math/tex; mode=display">
 R_zP_{xyz}=P_{xy}</script><p>其中$P_{xyz}=P_{1}$.</p>
 <p>三个式子迭代，就得到了</p>
 <script type="math/tex; mode=display">
@@ -303,7 +303,7 @@ R_{global}=R_zR_yR_x</script><p>证明的话，可以从坐标变换的根本出
 1 & 0 & 0 \\
 0 & 1 & 0 \\
 0 & 0 & 1
-\end{matrix}\right] \\</script><p>在全局坐标系中的坐标为</p>
+\end{matrix}\right]</script><p>在全局坐标系中的坐标为</p>
 <p>三个基底都可以作为单独的向量。在对目标局部坐标系进行旋转时，对每个基底的旋转是等同的。最开始，目标基底和全局基底相等。本质上是对向量的旋转，以$\boldsymbol{\varepsilon}_1$为例，首先绕x轴旋转，得到了$R_x\boldsymbol{\varepsilon}_1$为新的基向量；下一步绕y轴旋转，得到了$R_y(R_x\boldsymbol{\varepsilon}_1)$；最后得到的是</p>
 <script type="math/tex; mode=display">
 \boldsymbol{\varepsilon}_1^\prime=R_zR_yR_x\boldsymbol{\varepsilon}_1</script><p>因此，我们可以发现基底的变换满足：</p>
