@@ -157,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhowsuys0000c8ve3fqa5zfw/windows-atom-python-venv/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -171,7 +171,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/ckhowsuys0000c8ve3fqa5zfw/windows-atom-python-venv/" class="post-title-link" itemprop="url">如何在 Windows 下配置 Atom 的 Python 虚拟环境</a>
+            <a href="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/" class="post-title-link" itemprop="url">如何在 Windows 下配置 Atom 的 Python 虚拟环境</a>
         </h2>
 
         <div class="post-meta">
@@ -180,10 +180,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-19 22:07:03 / 修改时间：22:07:35" itemprop="dateCreated datePublished" datetime="2020-11-19T22:07:03+08:00">2020-11-19</time>
+              <time title="创建时间：2020-11-19 22:07:03" itemprop="dateCreated datePublished" datetime="2020-11-19T22:07:03+08:00">2020-11-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-20 09:28:28" itemprop="dateModified" datetime="2020-11-20T09:28:28+08:00">2020-11-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -209,7 +215,7 @@
 <h3 id="Python-开发需求"><a href="#Python-开发需求" class="headerlink" title="Python 开发需求"></a>Python 开发需求</h3><p>为了便于管理第三方库，推荐在 Python 开发的时候构建虚拟环境。不过日常使用时，如果不是大项目，跑个作业或者测试程序，甚至可能代码还没有报错信息长，就没必要专门开一个虚拟环境了。<br>这时问题就来了，我安装的 Python 根目录下没有我想要的包，所以我想用虚拟环境的编译器去跑我的代码，但是我又不想在体验稀烂的 cmd 或者 Anaconda Prompt 里面去用命令跑我的程序，那怎么才能把这个功能集成到 Atom 里面呢？</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ckhowsuys0000c8ve3fqa5zfw/windows-atom-python-venv/#more" rel="contents">
+              <a class="btn" href="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -233,7 +239,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhn4okpq000z38veffzzcieo/quaternion/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tn1000s24vea56vgrcf/quaternion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -247,7 +253,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/ckhn4okpq000z38veffzzcieo/quaternion/" class="post-title-link" itemprop="url">详解四元数与旋转</a>
+            <a href="/ckhpl4tn1000s24vea56vgrcf/quaternion/" class="post-title-link" itemprop="url">详解四元数与旋转</a>
         </h2>
 
         <div class="post-meta">
@@ -292,12 +298,12 @@
 
       
           <h2 id="依旧是前言"><a href="#依旧是前言" class="headerlink" title="依旧是前言"></a>依旧是前言</h2><p>我在前一篇<a target="_blank" rel="noopener" href="https://chzh9311.github.io/ckg9234he000co4ve4pyme6ze/EulerAngle/">欧拉角的介绍</a>里介绍过欧拉角，这是一种很直观的旋转表示。直观并没有什么不对的地方，但是我们人认为的直观，和机器认为的直观是有区别的……</p>
-<img src="/ckhn4okpq000z38veffzzcieo/quaternion/emotion1.jpg" class="">
+<img src="/ckhpl4tn1000s24vea56vgrcf/quaternion/emotion1.jpg" class="">
 <p>欧拉角，这个旋转的表达方式从欧拉提出开始沿用至今，依然有顽强的生命力。现在的几种流行的 MOCAP 文件格式，ASF / AMC, BVH, C3D，除了最后一种存的是三维坐标，前两种的旋转全部是用欧拉角表示的。说实话，这并不是什么好事儿。都 0202 年了，欧拉角已经两百多年了，居然还在沿用。要说这个表示方法是什么很完美，很经典的方式也就算了，可欧拉角有很多严重的缺陷：比如万向节死锁的问题，会导致一个自由度完全失效。</p>
 <p>所以，人们其实研究了一些替代品，比如轴角法表示，以及进一步的四元数表示。四元数表示起来最大的好处就是，连续。这一篇将会简单讲讲四元数的来历，以及推导旋转的四元数表示。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ckhn4okpq000z38veffzzcieo/quaternion/#more" rel="contents">
+              <a class="btn" href="/ckhpl4tn1000s24vea56vgrcf/quaternion/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -321,7 +327,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhn4okpf000d38ve8ogz39ew/BVH/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tmy000n24ve6l2c1cb7/BVH/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -335,7 +341,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/ckhn4okpf000d38ve8ogz39ew/BVH/" class="post-title-link" itemprop="url">人体动作捕捉格式之BVH</a>
+            <a href="/ckhpl4tmy000n24ve6l2c1cb7/BVH/" class="post-title-link" itemprop="url">人体动作捕捉格式之BVH</a>
         </h2>
 
         <div class="post-meta">
@@ -385,7 +391,7 @@
 <h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>文件分为两大部分，<strong>层级结构</strong>和<strong>运动信息</strong>。下面是 BVH 的一个示例：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ckhn4okpf000d38ve8ogz39ew/BVH/#more" rel="contents">
+              <a class="btn" href="/ckhpl4tmy000n24ve6l2c1cb7/BVH/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -409,7 +415,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhn4okpo000w38ve17jw8h8y/EulerAngle/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tmy000l24ve3g7efi5e/EulerAngle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -423,7 +429,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/ckhn4okpo000w38ve17jw8h8y/EulerAngle/" class="post-title-link" itemprop="url">欧拉角和旋转矩阵的相互转化</a>
+            <a href="/ckhpl4tmy000l24ve3g7efi5e/EulerAngle/" class="post-title-link" itemprop="url">欧拉角和旋转矩阵的相互转化</a>
         </h2>
 
         <div class="post-meta">
@@ -478,7 +484,7 @@
 <p>最典型的欧拉角旋转为 $z-X-Z$ 顺序，即刚体先后绕 $z, X, Z$ 轴旋转角度 $\alpha, \beta, \gamma$。注意字母<strong>大小写</strong>，即最开始是绕全局坐标系的 $z$轴 旋转，之后按顺序绕自己局部坐标系的 $X$ 轴和 $Z$ 轴旋转，考虑到最开始两个坐标系是重合的，即 $z=Z$，这种旋转顺序也可以理解为 $ZXZ$。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ckhn4okpo000w38ve17jw8h8y/EulerAngle/#more" rel="contents">
+              <a class="btn" href="/ckhpl4tmy000l24ve3g7efi5e/EulerAngle/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -502,7 +508,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhn4okpo000x38veg2kwc77f/PathDisplay/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -516,7 +522,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/ckhn4okpo000x38veg2kwc77f/PathDisplay/" class="post-title-link" itemprop="url">RVIZ中利用markers标记历史路径（超详细）</a>
+            <a href="/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/" class="post-title-link" itemprop="url">RVIZ中利用markers标记历史路径（超详细）</a>
         </h2>
 
         <div class="post-meta">
@@ -572,7 +578,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> ROS_PACKAGE_PATH=<span class="variable">$&#123;ROS_PACKAEG_PATH&#125;</span>:<span class="variable">$&#123;HOME&#125;</span>/catkin_ws/src</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ckhn4okpo000x38veg2kwc77f/PathDisplay/#more" rel="contents">
+              <a class="btn" href="/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
