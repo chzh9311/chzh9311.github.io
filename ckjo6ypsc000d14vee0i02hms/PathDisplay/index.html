@@ -23,22 +23,22 @@
   <meta name="description" content="写在前面最近有道作业题需要将机器人的历史路径显示出来，但是网上很多相关的教程都是搬运了官网的链接，并没有详细的操作流程。。。因此我又花费了很多时间去 ros 官网上学习 marker 的用法，学习怎么写 publisher 和 subscriber，最终成功将路径显示了出来。这篇文章是对这个过程的详细的介绍，原理和代码实践部分会分开，因此如果你赶时间只要一个结果的话，把详细的讲解跳过即可。不过我还">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RVIZ中利用markers标记历史路径（超详细）">
-<meta property="og:url" content="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/index.html">
+<meta property="og:url" content="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/index.html">
 <meta property="og:site_name" content="Hysteresis.">
 <meta property="og:description" content="写在前面最近有道作业题需要将机器人的历史路径显示出来，但是网上很多相关的教程都是搬运了官网的链接，并没有详细的操作流程。。。因此我又花费了很多时间去 ros 官网上学习 marker 的用法，学习怎么写 publisher 和 subscriber，最终成功将路径显示了出来。这篇文章是对这个过程的详细的介绍，原理和代码实践部分会分开，因此如果你赶时间只要一个结果的话，把详细的讲解跳过即可。不过我还">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/addmarker-marked.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/possibleerror.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/success.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/addmarker-marked.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/possibleerror.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/success.jpg">
 <meta property="article:published_time" content="2020-07-10T08:20:11.000Z">
 <meta property="article:modified_time" content="2020-11-08T03:36:47.336Z">
 <meta property="article:author" content="滞环">
 <meta property="article:tag" content="ROS">
 <meta property="article:tag" content="Simulation">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/addmarker-marked.jpg">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/addmarker-marked.jpg">
 
-<link rel="canonical" href="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/">
+<link rel="canonical" href="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/">
 
 
 <script id="page-configurations">
@@ -168,7 +168,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckjo6ypsc000d14vee0i02hms/PathDisplay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -285,13 +285,13 @@
 <p>之后，启动自动导航，调出地图。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> roslaunch turtlebot_gazebo amcl_demo.launch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> roslaunch turtlebot_rviz_launchers view_navigation.launch</span></span><br></pre></td></tr></table></figure>
 <p>在rviz里订阅 <code>Marker</code> 话题：点击左下角的 “add”，在弹出的对话框中选择 Marker。</p>
-<img src="/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/addmarker-marked.jpg" class="" width="900">
+<img src="/ckjo6ypsc000d14vee0i02hms/PathDisplay/addmarker-marked.jpg" class="" width="900">
 <p>获取坐标需要一定的历史信息，所以可以先让机器人运动一下，再启动 <code>showpath</code> 节点：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosrun show_path showpath</span></span><br></pre></td></tr></table></figure>
 <p>可能会有这样的报错信息，忽略就好，不影响最终效果（如果有知道为什么请赐教，在此谢过）</p>
-<img src="/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/possibleerror.jpg" class="">
+<img src="/ckjo6ypsc000d14vee0i02hms/PathDisplay/possibleerror.jpg" class="">
 <p>给机器人定个目标位姿，导航过去就可以看到路径用蓝色线条标出来啦。</p>
-<img src="/ckhpl4tmz000p24ve8rw35c0o/PathDisplay/success.jpg" class="">
+<img src="/ckjo6ypsc000d14vee0i02hms/PathDisplay/success.jpg" class="">
 <p>PS:虽然这里是用导航来移动机器人的，但是我们标记历史路径的程序并没有用到导航信息。事实上这里用别的方式去移动机器人，也是可以画出路径的，只是，没有地图的话，这个路径的意义就不是那么明显了。</p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://wiki.ros.org/rviz/Tutorials/Markers%3A%20Basic%20Shapes">Marker 基础形状教程</a></li>
@@ -318,7 +318,7 @@
     <div class="post-nav">
       <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/ckhpl4tmy000l24ve3g7efi5e/EulerAngle/" rel="next" title="欧拉角和旋转矩阵的相互转化">
+    <a href="/ckjo6ypsc000c14ve4nkih5x8/EulerAngle/" rel="next" title="欧拉角和旋转矩阵的相互转化">
       欧拉角和旋转矩阵的相互转化 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -395,14 +395,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -443,7 +443,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

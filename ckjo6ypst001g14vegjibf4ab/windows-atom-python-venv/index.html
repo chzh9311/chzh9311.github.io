@@ -23,26 +23,26 @@
   <meta name="description" content="起因我为什么选择 AtomAtom 在 Windows 的文本编辑器里面可以说是完全拍的上号的，用的人也比较多。我选择 Atom 主要还是因为之前用过 Vim，而 Atom 的 Vim 插件已经把常用功能全部都做到位了，包括 (Ctrl + A &#x2F; Ctrl + X) 进行数字增减的操作。加上一个 ex-mode 插件实现 : 命令，已经非常贴合 Vim 的使用体验了。至于为什么不用 Vim 了，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何在 Windows 下配置 Atom 的 Python 虚拟环境">
-<meta property="og:url" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/index.html">
+<meta property="og:url" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/index.html">
 <meta property="og:site_name" content="Hysteresis.">
 <meta property="og:description" content="起因我为什么选择 AtomAtom 在 Windows 的文本编辑器里面可以说是完全拍的上号的，用的人也比较多。我选择 Atom 主要还是因为之前用过 Vim，而 Atom 的 Vim 插件已经把常用功能全部都做到位了，包括 (Ctrl + A &#x2F; Ctrl + X) 进行数字增减的操作。加上一个 ex-mode 插件实现 : 命令，已经非常贴合 Vim 的使用体验了。至于为什么不用 Vim 了，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/plug-python-run.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/F5cmd.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/command-base.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/base-error.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/change-env.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/img-proc.jpg">
-<meta property="og:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/program.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/plug-python-run.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/F5cmd.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/command-base.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/base-error.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/change-env.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/img-proc.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/program.jpg">
 <meta property="article:published_time" content="2020-11-19T14:07:03.000Z">
 <meta property="article:modified_time" content="2020-11-20T01:28:28.810Z">
 <meta property="article:author" content="滞环">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Atom">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/plug-python-run.jpg">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/plug-python-run.jpg">
 
-<link rel="canonical" href="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/">
+<link rel="canonical" href="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/">
 
 
 <script id="page-configurations">
@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -236,9 +236,9 @@
 <h3 id="Python-开发需求"><a href="#Python-开发需求" class="headerlink" title="Python 开发需求"></a>Python 开发需求</h3><p>为了便于管理第三方库，推荐在 Python 开发的时候构建虚拟环境。不过日常使用时，如果不是大项目，跑个作业或者测试程序，甚至可能代码还没有报错信息长，就没必要专门开一个虚拟环境了。<br>这时问题就来了，我安装的 Python 根目录下没有我想要的包，所以我想用虚拟环境的编译器去跑我的代码，但是我又不想在体验稀烂的 cmd 或者 Anaconda Prompt 里面去用命令跑我的程序，那怎么才能把这个功能集成到 Atom 里面呢？</p>
 <a id="more"></a>
 <h2 id="相关插件"><a href="#相关插件" class="headerlink" title="相关插件"></a>相关插件</h2><h3 id="运行程序用的-atom-python-run"><a href="#运行程序用的-atom-python-run" class="headerlink" title="运行程序用的 atom-python-run"></a>运行程序用的 atom-python-run</h3><p>这里我的 Atom 可以跑程序的关键是 <a target="_blank" rel="noopener" href="https://atom.io/packages/atom-python-run"><code>atom-python-run</code></a> 这个插件：</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/plug-python-run.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/plug-python-run.jpg" class="">
 <p>这个插件允许你按下 <code>F5</code> 或 <code>F6</code> 就可以执行当前的程序。其实原理很简单，就是执行了一条自定义命令：</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/F5cmd.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/F5cmd.jpg" class="">
 <p>这条命令是可以更改的。改起来也很简单，只需要知道 <code>&#123;file&#125;</code> 代表的是当前文件，而每次按下 <code>F5</code> 都会执行一遍这条指令就好。</p>
 <p>很显然，这个插件无法解决虚拟环境的问题。虽然你大可以把这条指令写明成用虚拟环境的 Python 编译器执行，但是其他插件的工作环境并没有变化。结果就是你写代码的时候 <code>pylint</code> 在不停地告诉你这个包找不到那个包不存在，强迫症当场去世。</p>
 <h3 id="虚拟环境插件尝试"><a href="#虚拟环境插件尝试" class="headerlink" title="虚拟环境插件尝试"></a>虚拟环境插件尝试</h3><p>所以我又去找了别的插件，参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/appleyuchi/article/details/78966415">这篇文章</a>找到了这个 <a target="_blank" rel="noopener" href="https://atom.io/packages/atom-python-virtualenv"><code>atom-python-virtualenv</code></a>.</p>
@@ -251,14 +251,14 @@
 <p>也就意味着以上三者，现在都做不到。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>如果插件行不通的话，我想到的最简单的方法就是更改整个 Atom 的运行环境。Ubuntu 中 shell 的环境变量是可以继承到其子进程中的，也就是你在终端打开一个新的应用，这个应用的环境变量会继承这个终端的。在 Windows 内应该有类似的特性。</p>
 <p>所以，我尝试从 Anaconda Prompt 中用命令启动 Atom：</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/command-base.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/command-base.jpg" class="">
 <p> 这个 base 环境下是没有 <code>opencv</code> 的，看到这里 <code>import cv2</code> 是报错的，继续运行也会出现错误。</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/base-error.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/base-error.jpg" class="">
 <p>而当我在 Anaconda Prompt 中更改虚拟环境再打开 Atom 时：</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/change-env.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/change-env.jpg" class="">
 <p>我发现 <code>pylint</code> 的报错消失了，程序也可以正常运行：</p>
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/img-proc.jpg" class="">
-<img src="/ckhpl4tn2000v24ve8yh5gbcy/windows-atom-python-venv/program.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/img-proc.jpg" class="">
+<img src="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/program.jpg" class="">
 <p>好诶！虽然这个方法肯定是做不到虚拟环境的热切换，但是本来就是写一个小项目要用，基本也不会有切换虚拟环境的需求，问题解决。</p>
 <p>我这里是用 conda 的虚拟环境作的示例，实际上 pip 的虚拟环境也是一样的道理，只要先更改 shell 的环境变量，再在这个 shell 内执行 <code>atom</code> 命令打开 Atom 就完成了。</p>
 <p>进一步，如果还是感觉这个解决方案需要每次启动都切换环境太麻烦，那么还有吧这两条命令封装起来，变成一个 bat 脚本文件。具体来说，新建一个文本文档，将以下命令：</p>
@@ -288,10 +288,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/ckhpl4tn1000s24vea56vgrcf/quaternion/" rel="prev" title="详解四元数与旋转">
+    <a href="/ckjo6ypse000h14vefi0ha68u/quaternion/" rel="prev" title="详解四元数与旋转">
       <i class="fa fa-chevron-left"></i> 详解四元数与旋转
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/" rel="next" title="OpenCV 常用函数之一——图像缩放：cv.resize">
+      OpenCV 常用函数之一——图像缩放：cv.resize <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -366,14 +369,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -414,7 +417,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
