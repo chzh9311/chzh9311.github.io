@@ -23,21 +23,21 @@
   <meta name="description" content="写在系列前面这个系列是我第一个想要更下去的系列。每篇会全面介绍一个 OpenCV 函数，会给出 API 和示例。示例主要是用 Python 去写，但是 OpenCV 的原生语言是 C++，所以想翻译过去其实很简单。介绍过程中如果有相关的 CV 知识也会一并写入，还是那句话，争取做到说人话，让小白也能看得懂。 这个系列尽量周更，我先立个 flag ~">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenCV 常用函数之一——图像缩放：cv.resize">
-<meta property="og:url" content="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/index.html">
+<meta property="og:url" content="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/index.html">
 <meta property="og:site_name" content="Hysteresis.">
 <meta property="og:description" content="写在系列前面这个系列是我第一个想要更下去的系列。每篇会全面介绍一个 OpenCV 函数，会给出 API 和示例。示例主要是用 Python 去写，但是 OpenCV 的原生语言是 C++，所以想翻译过去其实很简单。介绍过程中如果有相关的 CV 知识也会一并写入，还是那句话，争取做到说人话，让小白也能看得懂。 这个系列尽量周更，我先立个 flag ~">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/resize1.png">
-<meta property="og:image" content="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/resize2.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/resize1.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/resize2.png">
 <meta property="article:published_time" content="2021-01-08T11:16:40.000Z">
 <meta property="article:modified_time" content="2021-01-08T11:45:37.900Z">
 <meta property="article:author" content="滞环">
 <meta property="article:tag" content="CV">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/resize1.png">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/resize1.png">
 
-<link rel="canonical" href="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/">
+<link rel="canonical" href="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/">
 
 
 <script id="page-configurations">
@@ -87,8 +87,8 @@
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div id="id-header-inner" class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
@@ -167,7 +167,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -283,12 +283,12 @@
 <h3 id="缩放方式其一"><a href="#缩放方式其一" class="headerlink" title="缩放方式其一"></a>缩放方式其一</h3><p>那么，想要实现缩放图像，有两种方法。第一种方法是指定缩放后的图像大小。下面是实现这个功能的一个简单的程序。后面的给出的其他程序都是对 <code>resize</code> 所在行进行的改动。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line">img = cv.imread(<span class="string">&quot;你希望缩放的图片&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩放图像，后面的其他程序都是在这一行上改动</span></span><br><span class="line">dst = cv.resize(img, (<span class="number">400</span>, <span class="number">300</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示图像</span></span><br><span class="line">cv.imshow(<span class="string">&quot;dst: %d x %d&quot;</span> % (dst.shape[<span class="number">0</span>], dst.shape[<span class="number">1</span>]), dst)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 <p> 在这个例子中，我们指定了缩放后图像的大小为 <code>400 x 300</code>，<code>resize</code> 函数就会将图像拉伸到这个大小，拉伸后的图像相比于原图不会有任何的裁剪。</p>
-<img src="/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/resize1.png" class="">
+<img src="/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/resize1.png" class="">
 <h3 id="缩放方式其二"><a href="#缩放方式其二" class="headerlink" title="缩放方式其二"></a>缩放方式其二</h3><p>另一种方法，就是利用后面的 <code>fx</code> 和 <code>fy</code>，指定缩放后图像长宽相对于原图的比例。如果利用这两个参数，前面的 <code>dsize</code> 要写成一个不合法的形式（比如：<code>(0, 0)</code>）。具体原因后面会解释。</p>
 <p>注意，在 <code>dsize</code> 和 <code>fx</code> 中间其实隔了一个无用的 <code>dst</code>，虽然没有实际作用，但是这个参数<strong>确实存在</strong>，按照 Python 的函数传参规则，要么指明实参传递给哪个形参，要么按顺序传参不能遗漏。具体看下面的例子，两行的效果一致，都是将图像横向缩放为原来的 0.5 倍，纵向缩放为原来的 0.3 倍。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 形参缺省</span></span><br><span class="line">dst = cv.resize(img, (<span class="number">0</span>, <span class="number">0</span>), <span class="literal">None</span>, <span class="number">0.5</span>, <span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指明形参</span></span><br><span class="line">dst = cv.resize(img, (<span class="number">0</span>, <span class="number">0</span>), fx=<span class="number">0.5</span>, fy=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
 <p>值得注意的是，缩放后的图像宽高是根据 <code>round(img.shape[0] * fx)</code> 和 <code>round(img.shape[1] * fy)</code> 来计算的，所以即使 <code>fx</code> 和 <code>fy</code> 并不是0，只要这两个计算结果中有一个是 0，也会报错。</p>
-<img src="/ckjo6ypsa000914vegiwqg1mm/Opencv-imresize/resize2.png" class="">
+<img src="/ckleov0oh000yjsve4bwbd4yc/Opencv-imresize/resize2.png" class="">
 <h3 id="两种方式的优先级"><a href="#两种方式的优先级" class="headerlink" title="两种方式的优先级"></a>两种方式的优先级</h3><p>OpenCV 会先检查 <code>dsize</code> 是否合法，即图像的长、宽是否都是非 0 的。如果是，就按照这个缩放，忽略后面的 <code>fx</code> 和 <code>fy</code>；如果不是，就按照 <code>fx</code>，<code>fy</code> 来计算。即<strong>优先级：</strong> <code>dsize</code> &gt; <code>fx</code> <code>fy</code>.</p>
 <p>另外，两种方式是独立定义的，也就是不能混着，用数值指定长却用比率指定宽。不存在 <code>cv.resize(img, (0, 400), fx=0.42)</code> 这种用法！</p>
 <h3 id="关于插值方式"><a href="#关于插值方式" class="headerlink" title="关于插值方式"></a>关于插值方式</h3><p>最后一个参数，在 <code>resize</code> 函数里有 7 种可能取值，参考<a target="_blank" rel="noopener" href="https://docs.opencv.org/4.5.1/da/d54/group__imgproc__transform.html#ga5bb5a1fea74ea38e1a5445ca803ff121">OpenCV文档相关页</a>。但是我这里第 7 个参数是不存在的，或许是版本问题？最后两个参数我试过，会报错，不行。</p>
@@ -315,11 +315,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/ckjo6ypst001g14vegjibf4ab/windows-atom-python-venv/" rel="prev" title="如何在 Windows 下配置 Atom 的 Python 虚拟环境">
+    <a href="/ckleov0op0018jsvedbqv1r8b/windows-atom-python-venv/" rel="prev" title="如何在 Windows 下配置 Atom 的 Python 虚拟环境">
       <i class="fa fa-chevron-left"></i> 如何在 Windows 下配置 Atom 的 Python 虚拟环境
     </a></div>
       <div class="post-nav-item">
-    <a href="/ckkb5rljj0000z8ve3d7pbik3/opencv-filter2D/" rel="next" title="OpenCV 图像卷积：cv.filter2D() 函数详解">
+    <a href="/ckleov0ol0012jsvehqwqec1y/opencv-filter2D/" rel="next" title="OpenCV 图像卷积：cv.filter2D() 函数详解">
       OpenCV 图像卷积：cv.filter2D() 函数详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -396,14 +396,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
