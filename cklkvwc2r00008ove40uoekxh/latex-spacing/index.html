@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo/logo-apple-touch.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/logo-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/logo-16x16.png">
+  <link rel="mask-icon" href="/images/logo/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":22,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="讲讲 Latex 让人头疼的地方为什么科学文献通常要求用 $\LaTeX$ 书写呢？当然是因为好看呀。 $\LaTeX$ 美观的排版背后是一个庞杂的符号和排版系统，光是看看就知道这根本不是一两天能全部掌握的，就连 $\LaTeX$ 这个标题也有专门的特殊排版（看着有点奇怪，后面还是直接用 Latex 好了）。有很多符号看上去一样，但是又有十分细微的差别，比如下面的两个单词，你能看出差异吗：  Mi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Latex 中的各种空格">
+<meta property="og:url" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/index.html">
+<meta property="og:site_name" content="Hysteresis.">
+<meta property="og:description" content="讲讲 Latex 让人头疼的地方为什么科学文献通常要求用 $\LaTeX$ 书写呢？当然是因为好看呀。 $\LaTeX$ 美观的排版背后是一个庞杂的符号和排版系统，光是看看就知道这根本不是一两天能全部掌握的，就连 $\LaTeX$ 这个标题也有专门的特殊排版（看着有点奇怪，后面还是直接用 Latex 好了）。有很多符号看上去一样，但是又有十分细微的差别，比如下面的两个单词，你能看出差异吗：  Mi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/fixedspaces.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/self-defined.png">
+<meta property="og:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/vspaces.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/normal-space.png">
+<meta property="og:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/fill.jpg">
+<meta property="article:published_time" content="2021-02-25T13:08:53.000Z">
+<meta property="article:modified_time" content="2021-02-25T13:13:12.388Z">
+<meta property="article:author" content="滞环">
+<meta property="article:tag" content="latex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/fixedspaces.jpg">
+
+<link rel="canonical" href="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Latex 中的各种空格 | Hysteresis.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div id="id-header-inner" class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hysteresis.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make knowledge understandable.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/cklkvwc2r00008ove40uoekxh/latex-spacing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="滞环">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hysteresis.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Latex 中的各种空格
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-25 21:08:53 / 修改时间：21:13:12" itemprop="dateCreated datePublished" datetime="2021-02-25T21:08:53+08:00">2021-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="讲讲-Latex-让人头疼的地方"><a href="#讲讲-Latex-让人头疼的地方" class="headerlink" title="讲讲 Latex 让人头疼的地方"></a>讲讲 Latex 让人头疼的地方</h1><p>为什么科学文献通常要求用 $\LaTeX$ 书写呢？当然是因为好看呀。</p>
+<p>$\LaTeX$ 美观的排版背后是一个庞杂的符号和排版系统，光是看看就知道这根本不是一两天能全部掌握的，就连 $\LaTeX$ 这个标题也有专门的特殊排版（看着有点奇怪，后面还是直接用 Latex 好了）。有很多符号看上去一样，但是又有十分细微的差别，比如下面的两个单词，你能看出差异吗：</p>
+<script type="math/tex; mode=display">
+Microsoft \qquad Micr\omicron s\omicron ft</script><p>说实话我自己也看不出来（或者我用的这个字体本身就没有区别），但上面那一行的的源码是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Microsoft \qquad Micr\omicron s\omicron ft</span><br></pre></td></tr></table></figure>
+<p>后一个微软里面的 $\omicron$ 其实是希腊字母欧米克荣，而不是英文字母 $o$ ！</p>
+<blockquote>
+<p>冷知识：我们用来表示高阶无穷小的符号 $\omicron$ 是希腊字母。</p>
+</blockquote>
+<p>Latex 的精确性让它更适应于公式的排版，光是空格有多少种，就足够我写一篇了。空字符可以在我们排版时帮助我们对齐一些难以对齐的行或列，在不失 latex 美观的前提下，在细节上实现 word 一样的随意调整。<del>不过遇到这种情况时，我并不推荐将空字符作为首选方案。</del>了解一下 latex 的空字符还是有必要的。</p>
+<a id="more"></a>
+<h1 id="各种长度的空格"><a href="#各种长度的空格" class="headerlink" title="各种长度的空格"></a>各种长度的空格</h1><p>Latex 的空格种类繁多，看过来让人眼花缭乱。如果按照长度分类的话，大致可以分为下面三类。即：“只要不换字体，我一直是这么长” 的相对字体长度固定的空格，“你让我多长我就多长” 的自定义长度空格，和 “我多长取决于你把我放在哪里” 的自适应长度空格。</p>
+<h2 id="相对字体长度固定"><a href="#相对字体长度固定" class="headerlink" title="相对字体长度固定"></a>相对字体长度固定</h2><p>先看相对字体长度固定的空格，这类空格最简单粗暴，你把它敲出来，它给你一段固定的留白。Latex 本身就有的这类空格并不多，<code>amsmath</code> 包则将这类空格变得更加丰富。</p>
+<p>在往下讲之前，先说明一个长度单位： <code>em</code>. </p>
+<p>这个单位，常用 latex 的小伙伴肯定不陌生，但是具体含义其实众说纷纭。它并不严格地等于字体中 M 的宽度，也并不严格等于字体本身的大小，只需要知道<strong>这个单位会随着字体变化</strong>就行了。</p>
+<p>常用的这类空格，以及它们各自的长度如下表所示：</p>
+<img src="/cklkvwc2r00008ove40uoekxh/latex-spacing/fixedspaces.jpg" class="" width="800">
+<p>有几个需要注意的点：</p>
+<ol>
+<li><strong>转义符 + 标点 的组合，原则上不要在前后加空格。</strong>相比于标准的<code>a\,b</code>，加入了空格的 <code>a\, b</code> 表现出来的空字符其实是 <code>\,</code> 加上一个常规空格。而常规空格是会适应排版进行调整的，这就导致生成的空格长度不但比想像的长，还不固定。</li>
+<li><code>\quad</code>, <code>\thinspace</code> <strong>这类转义符 + 字母的组合，需要在后面打空格</strong>。这时后面加入的空格不会被识别为常规空格，而是单纯作为一个命令结束的标志。但是如果空格加在了命令前面，就会被当做一个常规空格。</li>
+<li>如果上面的字符没有达到想要的长度，<strong>可以进行组合</strong>。比如 <code>\;\!</code> 会生成一个 2/18 em 的空格。如果还达不到要求，可以试试下面的自定义长度命令。</li>
+</ol>
+<h2 id="自定义长度"><a href="#自定义长度" class="headerlink" title="自定义长度"></a>自定义长度</h2><p>自定义长度的命令会生成一个给定长度的空格，使用起来十分灵活。</p>
+<p>常用的记住 <code>\hspace</code> 和 <code>\vspace</code> 即可，前者用于水平方向，后者则用于垂直方向。这两个命令是 latex 原生的，不需要引入任何额外包。</p>
+<p>具体使用很简单，语法是 <code>\hspace&#123;&lt;space_width&gt;&#125;</code> 在 <code>&lt;space_width&gt;</code> 处填入你期望的长度。</p>
+<p>下图演示了三个使用案例及其等效的预设空格组合。其中 <code>\hspace&#123;1em&#125;</code> 生成的空格和 <code>\quad</code> 等长，而 <code>\hspace&#123;0.11111em&#125;</code> 生成的空格和 <code>\;\!</code> 等长，这里面甚至可以塞进一个负值，同时也有等长的定长空格组合与之对应。关于长度单位其实有很多可以说道的地方，比如 Latex 中的最小单位 <code>sp</code>，以及各个单位分别等于多少个 <code>sp</code> 等等，详情见这篇 <a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/8260/what-are-the-various-units-ex-em-in-pt-bp-dd-pc-expressed-in-mm">Stackexchange 上的问答</a>。</p>
+<img src="/cklkvwc2r00008ove40uoekxh/latex-spacing/self-defined.png" class="" width="600">
+<p>而另一个 <code>\vspace</code> 可能更通用一些，通常用于行间距的微调，包括但不限于图表和标题之间、图表和正文之间、标题和正文之间的距离调整。</p>
+<p>下面我们打一段文字：</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% ex 近似等于当前字体中 x 的高度</span></span><br><span class="line">楼下早上好啊！</span><br><span class="line"></span><br><span class="line">早……怎么这么挤啊！<span class="tag">\<span class="name">vspace</span><span class="string">&#123;-2ex&#125;</span></span></span><br><span class="line"></span><br><span class="line">我要和三楼贴贴!</span><br><span class="line"></span><br><span class="line"><span class="tag">\<span class="name">vspace</span><span class="string">&#123;2ex&#125;</span></span></span><br><span class="line"></span><br><span class="line">看我干嘛，我就在我该在的位置。</span><br></pre></td></tr></table></figure>
+<p>其效果就是这样</p>
+<img src="/cklkvwc2r00008ove40uoekxh/latex-spacing/vspaces.jpg" class="" width="600">
+<p>其实，无论 <code>vspace</code> 命令单独一行，还是和上下合并，其效果是一样的，都是在默认行距上进行加减。而相对于水平字距，行间距相对固定，因此不会带来很大的问题。</p>
+<h2 id="自适应长度"><a href="#自适应长度" class="headerlink" title="自适应长度"></a>自适应长度</h2><p>这类空格与上述不同，是以良好的排版效果作为第一优先级的。它们会随着期望的效果而改变自身的长度。</p>
+<h3 id="常规空格"><a href="#常规空格" class="headerlink" title="常规空格"></a>常规空格</h3><p>这类空格中最典型的就是常规空格，敲一下键盘上那个最长的空格键，你就输入了一个常规空格。</p>
+<p>中文文献书写中这种空格出场比较少，而英文书写中这个空格可以说是一篇文章中出现最频繁的字符了。为了排版美观，英文文献通常采用两端对齐的方式，但是英文单词又不一样长，经常出现到句尾长度不够，把下一行第一个单词拿到这一行长度又太长的情况。这时，Latex 会通过调整常规空格长度的方式来做到两端对齐。下图这句话出自《卖火柴的小女孩》。</p>
+<img src="/cklkvwc2r00008ove40uoekxh/latex-spacing/normal-space.png" class="">
+<h3 id="hfill-和-hfil"><a href="#hfill-和-hfil" class="headerlink" title="hfill 和 hfil"></a>hfill 和 hfil</h3><p>顾名思义，这两个命令可以起到填充作用。填充效果是<strong>能延伸到的最大宽度</strong>。通常，如果我们有张图片要并列摆放，中间就可以加上 <code>\hfill</code> 或 <code>\hfil</code>，可以把两个并排的物件中间撑开，达到一个左对齐，一个右对齐的效果。</p>
+<p>这里用并排的 <code>minipage</code> 做个示范：</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">\<span class="name">noindent</span></span><span class="tag">\<span class="name">begin</span><span class="string">&#123;minipage&#125;</span><span class="string">&#123;0.3\textwidth&#125;</span></span></span><br><span class="line">    Most terribly cold it was; it snowed, and was nearly quite dark, and evening - the last evening of the year.</span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;minipage&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">hfill</span></span> <span class="comment">% 或 \hfil</span></span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;minipage&#125;</span><span class="string">&#123;0.3\textwidth&#125;</span></span></span><br><span class="line">    In this cold and darkness there went along the street a poor little girl, bareheaded, and with naked feet.</span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;minipage&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">hfill</span></span> <span class="comment">% 或 \hfil</span></span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;minipage&#125;</span><span class="string">&#123;0.3\textwidth&#125;</span></span></span><br><span class="line">    When she left home she had her slippers on, it is true;</span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;minipage&#125;</span></span></span><br></pre></td></tr></table></figure>
+<p>运行效果如下。可以看到三个 <code>minipage</code> 中间被两处等长的空白分隔开了。</p>
+<img src="/cklkvwc2r00008ove40uoekxh/latex-spacing/fill.jpg" class="">
+<p>如果把上面两个 <code>\hfill</code> 都给换成 <code>\hfil</code>，编译出来的效果是完全一样的。但是，如果只改变其中一个，你就会发现 <code>\hfil</code> 那里的空格完全消失了。这是为什么呢？</p>
+<p>从定义上讲，<code>fill</code> 和 <code>fil</code> 都是符合排版规则下的无穷大。但是，<code>fill</code> 是比 <code>fil</code> <strong>更为高阶的无穷大</strong>。如果 <code>\hfill</code> 和 <code>\hfil</code> 同处一行，那么 <code>\hfil</code> 将会被 <code>\hfill</code> 给挤成什么都没有。这一点很好理解，即使是无穷大，在更高阶的无穷大面前也是0。而等阶的无穷大，在同一行时延展出来的空格长度就是相等的了。</p>
+<p>这两条命令同样有垂直版本，即 <code>\vfill</code> 和 <code>\vfil</code>，拓展的上限是一整页。同时，也有 <code>\hfilll</code> 和 <code>\vfilll</code>，是比两个 <code>l</code> 的 <code>fill</code> 更高阶的无穷大。这里就不多赘述了。</p>
+<h1 id="特殊空格"><a href="#特殊空格" class="headerlink" title="特殊空格"></a>特殊空格</h1><h2 id="不折行的空格"><a href="#不折行的空格" class="headerlink" title="不折行的空格"></a>不折行的空格</h2><p>有时我们需要空格前后的内容一定要在一行中显示，比如图表标题 <code>Fig. 3</code>，<code>Tab. 4</code> 这类，如果断行就很奇怪。Latex 为这种情况提供了一种不折行的空格（Non-breaking space），即 <code>~</code>。只需要写成 <code>Fig.~3</code> 即可。</p>
+<h2 id="命令后的空格"><a href="#命令后的空格" class="headerlink" title="命令后的空格"></a>命令后的空格</h2><p>有些命令是会在文档中生成一段文字，有时候我们希望能在这段文字后面加个空格。然而无论你在命令后面打多少个空格，latex 都只会把它当成命令结束的标志，生成的文档中这段文字会和后面的文字紧紧贴在一起。</p>
+<p>正确的解决方案是加一个转义符 <code>\</code> 再打空格，或者用 <code>&#123;&#125;</code> 作为命令终结的标志，来使后面的空格被识别成一个常规空格。即：</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">The date is <span class="tag">\<span class="name">today</span></span> and it&#x27;s raining heavily.</span><br><span class="line"><span class="comment">% 上面这句运行的结果：</span></span><br><span class="line"><span class="comment">% The date is February 24, 2021and it’s raining heavily.</span></span><br><span class="line"></span><br><span class="line">The date is <span class="tag">\<span class="name">today</span></span> <span class="tag">\<span class="name"> </span></span>and it&#x27;s raining heavily.</span><br><span class="line">The date is <span class="tag">\<span class="name">today</span><span class="string">&#123;&#125;</span></span> and it&#x27;s raining heavily.</span><br><span class="line"><span class="comment">% 上面两句运行的结果是一样的，即：</span></span><br><span class="line"><span class="comment">% The date is February 24, 2021 and it’s raining heavily.</span></span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Latex 里面的空白字符可谓琳琅满目，非一文可以穷尽。在这里我也只是汇总了一些常用的字符，基于我个人理解，有错误之处欢迎指出。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://math-linux.com/latex-26/faq/latex-faq/article/latex-horizontal-space-qquad-hspace-thinspace-enspace">Latex horizontal space: qquad,hspace, thinspace,enspace</a></li>
+<li><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/8260/what-are-the-various-units-ex-em-in-pt-bp-dd-pc-expressed-in-mm">What are the various units (ex, em, in, pt, bp, dd, pc) expressed in mm</a></li>
+<li><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/4239/which-measurement-units-should-one-use-in-latex">Which measurement uints should one use in latex</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.giss.nasa.gov/tools/latex/ltx-143.html">Spaces and Boxes</a></li>
+<li><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/21022/what-is-the-difference-between-fil-and-fill">What is the difference between ‘fil’ and ‘fill’ ?</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/latex/" rel="tag"># latex</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ckleov0on0013jsvefzta43h7/booklog/" rel="prev" title="线">
+      <i class="fa fa-chevron-left"></i> 线
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%B2%E8%AE%B2-Latex-%E8%AE%A9%E4%BA%BA%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-number">1.</span> <span class="nav-text">讲讲 Latex 让人头疼的地方</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E9%95%BF%E5%BA%A6%E7%9A%84%E7%A9%BA%E6%A0%BC"><span class="nav-number">2.</span> <span class="nav-text">各种长度的空格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%AD%97%E4%BD%93%E9%95%BF%E5%BA%A6%E5%9B%BA%E5%AE%9A"><span class="nav-number">2.1.</span> <span class="nav-text">相对字体长度固定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%95%BF%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">自定义长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E9%95%BF%E5%BA%A6"><span class="nav-number">2.3.</span> <span class="nav-text">自适应长度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E7%A9%BA%E6%A0%BC"><span class="nav-number">2.3.1.</span> <span class="nav-text">常规空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hfill-%E5%92%8C-hfil"><span class="nav-number">2.3.2.</span> <span class="nav-text">hfill 和 hfil</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E7%A9%BA%E6%A0%BC"><span class="nav-number">3.</span> <span class="nav-text">特殊空格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%8A%98%E8%A1%8C%E7%9A%84%E7%A9%BA%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">不折行的空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%90%8E%E7%9A%84%E7%A9%BA%E6%A0%BC"><span class="nav-number">3.2.</span> <span class="nav-text">命令后的空格</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="滞环"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">滞环</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chzh9311@163.com" title="E-Mail → mailto:chzh9311@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">滞环</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
