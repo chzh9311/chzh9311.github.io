@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo/logo-apple-touch.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/logo-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/logo-16x16.png">
+  <link rel="mask-icon" href="/images/logo/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":22,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言“相机就是计算机的眼睛。” —— 哲学砖家阿瓦里斯基 好吧是我说的  这句话其实仅代表的是我的观点，相机之于计算机正如眼睛之于人，人眼就可以看成两台精密的相机。不过，不同于人眼的随时调节，对人造的相机，其各项参数就相对固定，易于调节，这也为 CV 的研究提供了方便。相机的参数是 CV 里一项很重要的基础课，我在这里会尽量讲的浅显易懂。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="相机的基本模型和参数">
+<meta property="og:url" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/index.html">
+<meta property="og:site_name" content="Aling&#39;s Notebook.">
+<meta property="og:description" content="前言“相机就是计算机的眼睛。” —— 哲学砖家阿瓦里斯基 好吧是我说的  这句话其实仅代表的是我的观点，相机之于计算机正如眼睛之于人，人眼就可以看成两台精密的相机。不过，不同于人眼的随时调节，对人造的相机，其各项参数就相对固定，易于调节，这也为 CV 的研究提供了方便。相机的参数是 CV 里一项很重要的基础课，我在这里会尽量讲的浅显易懂。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/banner.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/lens.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/pinhole.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/image-plane.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/local_axes.png">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/skew.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/KM.png">
+<meta property="article:published_time" content="2021-03-20T09:50:46.000Z">
+<meta property="article:modified_time" content="2021-03-22T03:30:00.146Z">
+<meta property="article:author" content="牧羊人阿凌">
+<meta property="article:tag" content="CV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/camera-param/banner.jpg">
+
+<link rel="canonical" href="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>相机的基本模型和参数 | Aling's Notebook.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div id="id-header-inner" class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aling's Notebook.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make knowledge understandable.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckoydfqkk000vjcveb7l7hzdk/camera-param/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="牧羊人阿凌">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aling's Notebook.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          相机的基本模型和参数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-20 17:50:46" itemprop="dateCreated datePublished" datetime="2021-03-20T17:50:46+08:00">2021-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-22 11:30:00" itemprop="dateModified" datetime="2021-03-22T11:30:00+08:00">2021-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">理论笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="camera-param/banner.jpg" alt="图片由作者绘制"></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>“相机就是计算机的眼睛。”</p>
+<div style="text-align:right;">—— <del>哲学砖家阿瓦里斯基</del> 好吧是我说的</div>
+
+<p>这句话其实仅代表的是我的观点，相机之于计算机正如眼睛之于人，人眼就可以看成两台精密的相机。不过，不同于人眼的随时调节，对人造的相机，其各项参数就相对固定，易于调节，这也为 CV 的研究提供了方便。相机的参数是 CV 里一项很重要的基础课，我在这里会尽量讲的浅显易懂。</p>
+<a id="more"></a>
+<h1 id="相机模型-——-从小孔成像说起"><a href="#相机模型-——-从小孔成像说起" class="headerlink" title="相机模型 —— 从小孔成像说起"></a>相机模型 —— 从小孔成像说起</h1><h2 id="说起来，这是初中物理就开始学的吧"><a href="#说起来，这是初中物理就开始学的吧" class="headerlink" title="说起来，这是初中物理就开始学的吧"></a>说起来，这是初中物理就开始学的吧</h2><p>说到我们最早接触的光学成像模型，应当是小孔成像模型了。它原理很好理解，而且实验材料很容易搞到手。只要一张白纸和一个有孔的不透光薄片。将它们并排放置，再在薄片的另一侧放一个光源，就可以在白纸上看到光源的像了。</p>
+<p>而相机则是参考了人眼的构造，使用透镜来汇聚光线使成像更加清晰。尽管模型更加复杂，我们还是可以在图中看到小孔成像的影子。</p>
+<p><img src="camera-param/lens.png" alt="lens"></p>
+<p>从物体上射出的很多光线中，有一条始终穿过光心，这很像小孔成像的原理，而这就是相机<strong>针孔模型（Pinhole Model）</strong>存在的基础。尽管现实中的相机远比小孔成像要复杂的多，还会存在或多或少的畸变，但现阶段，我们并不需要考虑这些。</p>
+<h2 id="模型概览"><a href="#模型概览" class="headerlink" title="模型概览"></a>模型概览</h2><p>不知大家有没有听说过 “傻瓜相机”。这种相机的焦距极短，外面的物体，无论远近，成像都近似在焦距附近。我们只要在焦点哪里竖起胶卷，就可以将外界的影像清晰地记录下来。不需要调焦，所有的操作就是按下快门，所以它就有了这个名号。</p>
+<p>我们的模型和这个十分类似，我们的像平面放在焦点上，如果想找到成像点，只要把物体和相机光心连一条线就可以了。</p>
+<p><img src="camera-param/pinhole.png" alt="pinhole"></p>
+<p>不过，这里我们玩了一个小 trick：我们知道，小孔成像成的是<strong>倒像</strong>，倒像研究起来多难受啊，于是我们沿着光线把像平面往前推，推到对称的另一个焦点上。这个时候，成像点的确定依然是目标点和光心连线与像平面的交点，但是我们不再需要延长了，成像也变成了正像。不过要注意的是，这么做只是为了研究方便，实际上放在这里的像平面是无法成像的（准确的说，是成 “虚像”）。</p>
+<p>这就是相机的<strong>针孔模型</strong>，原理上类似于傻瓜相机，理解起来类似于小孔成像，研究起来…… 嘛，知道基本的几何构造就够了。</p>
+<h2 id="模型坐标系"><a href="#模型坐标系" class="headerlink" title="模型坐标系"></a>模型坐标系</h2><p>为了讨论模型的参数，最重要的是将这个模型量化，这就牵扯到坐标系如何建立。</p>
+<p>本问题中，牵扯到的坐标系有 3 个：<strong>世界三维坐标系，相机局部三维坐标系和图形二维坐标系</strong>。</p>
+<p>先从最熟悉的图像坐标说起。在学习图像坐标系的时候，最经典的坐标系是把原点放在图像的左上角，$x$ 轴向右，$y$ 轴向下。下面的 $Oxy$ 就是这样一个坐标系。</p>
+<p><img src="camera-param/image-plane.png" alt="base"></p>
+<p><strong>注意</strong>：图片坐标系是 $Oxy$， $F$ 是光轴和像平面的交点，$Fxy$ 不属于我前面说的那三个主要坐标系，只是用于过渡的，不要混淆了。</p>
+<p>相机的坐标系一般是以光心为坐标原点，垂直光轴向外为 $z$ 轴，$x$ 轴和 $y$ 轴和图像坐标系的方向一致。</p>
+<p><img src="camera-param/local_axes.png" alt="local axes"></p>
+<p>世界坐标系就没什么可说的了，根据使用情景随便定义就好。</p>
+<h1 id="相机参数"><a href="#相机参数" class="headerlink" title="相机参数"></a>相机参数</h1><p>基于针孔模型，我们来看看相机有哪些参数。下面这 6 个参数是著名的 <a target="_blank" rel="noopener" href="http://vision.imar.ro/human3.6m">Human3.6m</a> 数据集给出的标注里，描述相机用到的。它们可以全面描述一个相机的成像情况。</p>
+<p>参数分为内参和外参。前者由相机自身的特性决定，用于表示成像的情况，后者则表示相机的空间位姿。</p>
+<p>事先说明几个符号：$\boldsymbol{X}=[x\quad y\quad z]^T$ 表示的是非齐次坐标向量，$\tilde{\boldsymbol{X}}=[\boldsymbol{X}^T\quad w]^T=[x\quad y\quad z\quad w]^T$ 表示对应的齐次坐标向量。</p>
+<h2 id="内参"><a href="#内参" class="headerlink" title="内参"></a>内参</h2><p>讲内参之前，我们先看看针孔模型如何成像。</p>
+<p>前一节图中，<strong>以相机坐标系为基准</strong>，物点 $A$ 坐标为 $\boldsymbol{X}_c=[x\quad y\quad z]^T$，像点 $A^\prime$ 在我们翻转到 $z$ 正半轴的像平面上，因此坐标是 $\boldsymbol{X}_c^\prime = [x^\prime\quad y^\prime\quad f]^T$. </p>
+<p>你应该已经发现了，这两个点和原点在一条线上，因为光沿直线传播嘛。这就给我们的计算带来了极大的便利，因为 $A$ 和 $A^\prime$ 两者的坐标成比例：</p>
+<script type="math/tex; mode=display">
+\frac{x}{x^\prime} = \frac{y}{y^\prime} = \frac{z}{f}</script><p>成像，最后是要落在像平面上。像平面坐标和相机坐标系的 $xOy$ 平面有两点不同：1) 度量单位是像素；2) 原点在左上角，不在交点 $F$ 处。因此要做这一步坐标转换，有一步单位转换（数值上看就是<strong>缩放</strong>），和一步<strong>平移</strong>。</p>
+<p>$A^\prime$ 点在像平面上的坐标就是 ：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{X}_{img}=[\alpha x^\prime+x_0\quad \alpha y^\prime + y_0]^T=\left[\frac{\alpha f}{z}x+x_0\quad  \frac{\alpha f}{z}y + y_0\right]^T</script><p>这里 $\alpha$ 表示单位长度的像素个数，$(x_0, y_0)$ 是 $F$ 点在像平面上的坐标（像素）。</p>
+<p>把 $A^\prime$ 的二维坐标写成齐次坐标形式，再乘以 $z$，我们就得到了一个等效的表达形式：</p>
+<script type="math/tex; mode=display">
+\tilde{\boldsymbol{X}}_{img} = \left[\begin{matrix}\alpha fx+zx_0 \\\alpha fy + zy_0 \\ z\end{matrix}\right]</script><p>这样，我们的坐标变换就可以用一个 $3\times 3$ 的矩阵表示：</p>
+<script type="math/tex; mode=display">
+\tilde{\boldsymbol{X}}_{img} = \left[\begin{matrix}\alpha f & 0 & x_0 \\ 0 & \alpha f & y_0 \\ 0 & 0 & 1\end{matrix}\right]\left[\begin{matrix}x \\ y \\ z\end{matrix}\right]</script><p>考虑到实际相机，水平和垂直两个方向的成像比例不一定一致，因此把两个 $\alpha f$ 分开，写成 $x$ 方向的 $f_x$ 和 $y$ 方向的 $f_y$. 同时，成像有时会有一定程度的扭曲（skew），导致实际上成像结果中的两个坐标轴并不垂直，要实现这一点只需要在内参矩阵中加入一个扭曲系数 $s$ 即可。下图来自<a target="_blank" rel="noopener" href="https://blog.immenselyhappy.com/post/camera-axis-skew/#:~:text=The%20intrinsic%20parameters%20of%20a%20camera%20encompass%20the,into%20a%20matrix%20called%20the%20calibration%20matrix%20K">这篇博客</a>。</p>
+<p><img src="camera-param/skew.jpg" alt="skew"></p>
+<p>最终的内参矩阵如下：</p>
+<script type="math/tex; mode=display">
+K=\left[\begin{matrix}f_x & s & x_0 \\ 0 & f_y & y_0 \\ 0 & 0 & 1\end{matrix}\right]</script><p>其实这是一个投影变换矩阵，它的作用就是把相机坐标系内的点投影到像平面。</p>
+<h2 id="外参"><a href="#外参" class="headerlink" title="外参"></a>外参</h2><p>外参有两个：$R$ 和 $\boldsymbol{T}$，一个是表示朝向，一个表示位置。</p>
+<p>但是对于二者具体的含义，标准似乎并不统一。其实我们最常用的是外参矩阵，而不是这两个参数。为了便于理解，下面我挑选一种标准来讲解。</p>
+<p>这种标准下，我们的主角变成了相机坐标系，世界坐标系变成了藉由 $R$ 和 $T$ 才能确定的从坐标系，具体来说：</p>
+<ul>
+<li>$R$ 表示世界坐标系相对于相机坐标系的旋转；</li>
+<li>$\boldsymbol{T}$ 表示世界坐标系的原点在相机坐标系下的坐标。</li>
+</ul>
+<p>OK，下面我们来看看同一个点在世界坐标系的坐标 $\boldsymbol{X}_w=[x_w\quad y_w\quad z_w]^T$ 和相机坐标系的坐标 $\boldsymbol{X}_c=[x_c\quad y_c\quad z_c]^T$ 的关系。</p>
+<p>把相机坐标系平移到原点和世界坐标系重合，$\boldsymbol{X}_c$ 在新的坐标系下变成了 $\boldsymbol{X}_c - \boldsymbol{T}$. 再根据旋转矩阵含义（如果想详细了解旋转矩阵，可以参考我之前写的<a target="_blank" rel="noopener" href="https://chzh9311.github.io/ckleov0o20009jsve2ajbhdq3/EulerAngle/">这篇</a>），我们就可以得到这两个坐标间的关系：</p>
+<script type="math/tex; mode=display">
+R\boldsymbol{X}_w = \boldsymbol{X}_c - \boldsymbol{T}</script><p>如果写成一般的齐次坐标形式，那么结果就是：</p>
+<script type="math/tex; mode=display">
+\tilde{\boldsymbol{X}}_c = \left[\begin{matrix}R & \boldsymbol{T} \\ \boldsymbol{0} & 1\end{matrix}\right]\tilde{\boldsymbol{X}}_w</script><p>中间的这个 $4\times 4$ 的矩阵，就是我们所说的<strong>外参矩阵</strong>：</p>
+<script type="math/tex; mode=display">
+M = \left[\begin{matrix}R & \boldsymbol{T} \\ \boldsymbol{0} & 1\end{matrix}\right]</script><p>这个矩阵实现的是将世界坐标系的坐标转换到局部坐标系。</p>
+<h1 id="投影矩阵"><a href="#投影矩阵" class="headerlink" title="投影矩阵"></a>投影矩阵</h1><p>我们来简单总结一下两个矩阵的作用：内参矩阵 $K$ 可以将相机坐标系里的点投影到像平面，外参矩阵 $M$ 可以将点的坐标从世界坐标系转换到相机坐标系。如下图：</p>
+<p><img src="camera-param/KM.png" alt="KM"></p>
+<p>这个关系写明就是：</p>
+<script type="math/tex; mode=display">
+\tilde{\boldsymbol{X}}_{img} = K[R|\boldsymbol{T}]\boldsymbol{X}_w</script><p>外参矩阵只取了前 3 行，因为我们不需要生成齐次坐标。</p>
+<p>新的矩阵我们把它记作 $P$，这就是我们的<strong>投影矩阵</strong>。它的作用就是内参矩阵 + 外参矩阵这么简单。</p>
+<script type="math/tex; mode=display">
+P=K[R|\boldsymbol{T}]</script><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CV/" rel="tag"># CV</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ckoydfqkv001wjcve5kxcb23t/latex-spacing/" rel="prev" title="Latex 中的各种空格">
+      <i class="fa fa-chevron-left"></i> Latex 中的各种空格
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B-%E2%80%94%E2%80%94-%E4%BB%8E%E5%B0%8F%E5%AD%94%E6%88%90%E5%83%8F%E8%AF%B4%E8%B5%B7"><span class="nav-number">2.</span> <span class="nav-text">相机模型 —— 从小孔成像说起</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E8%B5%B7%E6%9D%A5%EF%BC%8C%E8%BF%99%E6%98%AF%E5%88%9D%E4%B8%AD%E7%89%A9%E7%90%86%E5%B0%B1%E5%BC%80%E5%A7%8B%E5%AD%A6%E7%9A%84%E5%90%A7"><span class="nav-number">2.1.</span> <span class="nav-text">说起来，这是初中物理就开始学的吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%A7%88"><span class="nav-number">2.2.</span> <span class="nav-text">模型概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">2.3.</span> <span class="nav-text">模型坐标系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E5%8F%82%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">相机参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%8F%82"><span class="nav-number">3.1.</span> <span class="nav-text">内参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E5%8F%82"><span class="nav-number">3.2.</span> <span class="nav-text">外参</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5"><span class="nav-number">4.</span> <span class="nav-text">投影矩阵</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="牧羊人阿凌"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">牧羊人阿凌</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chzh9311@163.com" title="E-Mail → mailto:chzh9311@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牧羊人阿凌</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo/logo-apple-touch.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/logo-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/logo-16x16.png">
+  <link rel="mask-icon" href="/images/logo/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.chzh9311.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":22,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="起因我为什么选择 AtomAtom 在 Windows 的文本编辑器里面可以说是完全拍的上号的，用的人也比较多。我选择 Atom 主要还是因为之前用过 Vim，而 Atom 的 Vim 插件已经把常用功能全部都做到位了，包括 (Ctrl + A &#x2F; Ctrl + X) 进行数字增减的操作。加上一个 ex-mode 插件实现 : 命令，已经非常贴合 Vim 的使用体验了。至于为什么不用 Vim 了，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在 Windows 下配置 Atom 的 Python 虚拟环境">
+<meta property="og:url" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/index.html">
+<meta property="og:site_name" content="Aling&#39;s Notebook.">
+<meta property="og:description" content="起因我为什么选择 AtomAtom 在 Windows 的文本编辑器里面可以说是完全拍的上号的，用的人也比较多。我选择 Atom 主要还是因为之前用过 Vim，而 Atom 的 Vim 插件已经把常用功能全部都做到位了，包括 (Ctrl + A &#x2F; Ctrl + X) 进行数字增减的操作。加上一个 ex-mode 插件实现 : 命令，已经非常贴合 Vim 的使用体验了。至于为什么不用 Vim 了，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/plug-python-run.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/F5cmd.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/command-base.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/base-error.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/change-env.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/img-proc.jpg">
+<meta property="og:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/program.jpg">
+<meta property="article:published_time" content="2020-11-19T14:07:03.000Z">
+<meta property="article:modified_time" content="2020-11-20T01:28:28.810Z">
+<meta property="article:author" content="牧羊人阿凌">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Atom">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/plug-python-run.jpg">
+
+<link rel="canonical" href="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何在 Windows 下配置 Atom 的 Python 虚拟环境 | Aling's Notebook.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div id="id-header-inner" class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aling's Notebook.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make knowledge understandable.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="牧羊人阿凌">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aling's Notebook.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何在 Windows 下配置 Atom 的 Python 虚拟环境
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-19 22:07:03" itemprop="dateCreated datePublished" datetime="2020-11-19T22:07:03+08:00">2020-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-20 09:28:28" itemprop="dateModified" datetime="2020-11-20T09:28:28+08:00">2020-11-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E5%AE%9E%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">操作实录</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><h3 id="我为什么选择-Atom"><a href="#我为什么选择-Atom" class="headerlink" title="我为什么选择 Atom"></a>我为什么选择 Atom</h3><p>Atom 在 Windows 的文本编辑器里面可以说是完全拍的上号的，用的人也比较多。我选择 Atom 主要还是因为之前用过 Vim，而 Atom 的 Vim 插件已经把常用功能全部都做到位了，包括 (Ctrl + A / Ctrl + X) 进行数字增减的操作。加上一个 <code>ex-mode</code> 插件实现 <code>:</code> 命令，已经非常贴合 Vim 的使用体验了。<br>至于为什么不用 Vim 了，因为 Vim 现在更新到 8.2 了，我以前配置的 vimrc 已经搬不过来了（救救孩子，孩子已经看不懂怎么配了 TAT）</p>
+<h3 id="Python-开发需求"><a href="#Python-开发需求" class="headerlink" title="Python 开发需求"></a>Python 开发需求</h3><p>为了便于管理第三方库，推荐在 Python 开发的时候构建虚拟环境。不过日常使用时，如果不是大项目，跑个作业或者测试程序，甚至可能代码还没有报错信息长，就没必要专门开一个虚拟环境了。<br>这时问题就来了，我安装的 Python 根目录下没有我想要的包，所以我想用虚拟环境的编译器去跑我的代码，但是我又不想在体验稀烂的 cmd 或者 Anaconda Prompt 里面去用命令跑我的程序，那怎么才能把这个功能集成到 Atom 里面呢？</p>
+<a id="more"></a>
+<h2 id="相关插件"><a href="#相关插件" class="headerlink" title="相关插件"></a>相关插件</h2><h3 id="运行程序用的-atom-python-run"><a href="#运行程序用的-atom-python-run" class="headerlink" title="运行程序用的 atom-python-run"></a>运行程序用的 atom-python-run</h3><p>这里我的 Atom 可以跑程序的关键是 <a target="_blank" rel="noopener" href="https://atom.io/packages/atom-python-run"><code>atom-python-run</code></a> 这个插件：</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/plug-python-run.jpg" class="">
+<p>这个插件允许你按下 <code>F5</code> 或 <code>F6</code> 就可以执行当前的程序。其实原理很简单，就是执行了一条自定义命令：</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/F5cmd.jpg" class="">
+<p>这条命令是可以更改的。改起来也很简单，只需要知道 <code>&#123;file&#125;</code> 代表的是当前文件，而每次按下 <code>F5</code> 都会执行一遍这条指令就好。</p>
+<p>很显然，这个插件无法解决虚拟环境的问题。虽然你大可以把这条指令写明成用虚拟环境的 Python 编译器执行，但是其他插件的工作环境并没有变化。结果就是你写代码的时候 <code>pylint</code> 在不停地告诉你这个包找不到那个包不存在，强迫症当场去世。</p>
+<h3 id="虚拟环境插件尝试"><a href="#虚拟环境插件尝试" class="headerlink" title="虚拟环境插件尝试"></a>虚拟环境插件尝试</h3><p>所以我又去找了别的插件，参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/appleyuchi/article/details/78966415">这篇文章</a>找到了这个 <a target="_blank" rel="noopener" href="https://atom.io/packages/atom-python-virtualenv"><code>atom-python-virtualenv</code></a>.</p>
+<p>博主在 Ubuntu 上搞好像没有问题，但我这 Windows 下却是不行的。尝试修改了很久的参数，却还是不行。最后，我翻到插件作者的说明，发现这个插件<strong>暂时不支持 anaconda 的虚拟环境</strong>！作者写了一个 To-Do list，其中有三项：</p>
+<ul>
+<li>加入对用 pip 安装新包的支持；</li>
+<li>加入对 pip 虚拟环境的支持；</li>
+<li>加入对 conda 虚拟环境的支持。</li>
+</ul>
+<p>也就意味着以上三者，现在都做不到。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>如果插件行不通的话，我想到的最简单的方法就是更改整个 Atom 的运行环境。Ubuntu 中 shell 的环境变量是可以继承到其子进程中的，也就是你在终端打开一个新的应用，这个应用的环境变量会继承这个终端的。在 Windows 内应该有类似的特性。</p>
+<p>所以，我尝试从 Anaconda Prompt 中用命令启动 Atom：</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/command-base.jpg" class="">
+<p> 这个 base 环境下是没有 <code>opencv</code> 的，看到这里 <code>import cv2</code> 是报错的，继续运行也会出现错误。</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/base-error.jpg" class="">
+<p>而当我在 Anaconda Prompt 中更改虚拟环境再打开 Atom 时：</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/change-env.jpg" class="">
+<p>我发现 <code>pylint</code> 的报错消失了，程序也可以正常运行：</p>
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/img-proc.jpg" class="">
+<img src="/ckoydfqkx0021jcvegi7nf01d/windows-atom-python-venv/program.jpg" class="">
+<p>好诶！虽然这个方法肯定是做不到虚拟环境的热切换，但是本来就是写一个小项目要用，基本也不会有切换虚拟环境的需求，问题解决。</p>
+<p>我这里是用 conda 的虚拟环境作的示例，实际上 pip 的虚拟环境也是一样的道理，只要先更改 shell 的环境变量，再在这个 shell 内执行 <code>atom</code> 命令打开 Atom 就完成了。</p>
+<p>进一步，如果还是感觉这个解决方案需要每次启动都切换环境太麻烦，那么还有吧这两条命令封装起来，变成一个 bat 脚本文件。具体来说，新建一个文本文档，将以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start /k cmd &quot;conda activate &lt;your env&gt; &amp;&amp; atom&quot;</span><br></pre></td></tr></table></figure>
+<p>输入，并将文档连同其扩展名重命名成一个 bat 文件，例如 <code>atom_venv.bat</code>。你可以把这个文件放在桌面，那么下次你希望启动虚拟环境为  <code>&lt;your env&gt;</code> 的 Atom，那么只需要把命令里的 <code>&lt;your env&gt;</code> 换成你的环境名就好。</p>
+<p>这条命令会打开一个新的命令行窗口，并分别执行引号内 <code>&amp;&amp;</code> 前后的两条指令，感兴趣的话可以查一查相关的脚本编写资料 XD</p>
+<h2 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h2><p>Atom， 包括我之前用的 Vim，有一个共同的毛病，就是对 Windows 的支持比不上 Linux。这也很无奈，毕竟两种操作系统最初的目标群体就是不同的，设计理念上就有很大的出入。</p>
+<p>不过呢，两种系统在近年来其实有相互取长补短的意思。撇开 Linux 的人性化界面不说，微软已经为 Windows 10 做出了一个终端。在微软商店里搜索 “Windows Terminal” 即可下载安装。这东西是基于 PowerShell 的，包装得很好，用着自然是比 cmd 舒服多了。支持很多 Terminal 的功能，比如很好用的代码自动补全，还有自己的配置文件，可以保存 Python 的虚拟环境方便下次使用。</p>
+<p>啰嗦了挺多的hhh 其实估计大部分人并没有时间去读这些废话，所以我在解决方案这部分做到尽量简洁明了。但是我还是想嘴碎嘴碎，说点别的题外话。感谢你能看到这里。</p>
+<p>❤ by Hysteresis</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Atom/" rel="tag"># Atom</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ckoydfqkw001zjcve3i390w0n/quaternion/" rel="prev" title="详解四元数与旋转">
+      <i class="fa fa-chevron-left"></i> 详解四元数与旋转
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ckoydfqkh000mjcve46fpax5l/Opencv-imresize/" rel="next" title="OpenCV 常用函数之一——图像缩放：cv.resize">
+      OpenCV 常用函数之一——图像缩放：cv.resize <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9-Atom"><span class="nav-number">1.1.</span> <span class="nav-text">我为什么选择 Atom</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-%E5%BC%80%E5%8F%91%E9%9C%80%E6%B1%82"><span class="nav-number">1.2.</span> <span class="nav-text">Python 开发需求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">相关插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%94%A8%E7%9A%84-atom-python-run"><span class="nav-number">2.1.</span> <span class="nav-text">运行程序用的 atom-python-run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E6%8F%92%E4%BB%B6%E5%B0%9D%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟环境插件尝试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">完成</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="牧羊人阿凌"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">牧羊人阿凌</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chzh9311" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chzh9311" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chzh9311@163.com" title="E-Mail → mailto:chzh9311@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牧羊人阿凌</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
