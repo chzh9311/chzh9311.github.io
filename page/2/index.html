@@ -22,26 +22,26 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Aling&#39;s Notebook.">
-<meta property="og:url" content="http://blog.chzh9311.com/archives/2020/11/index.html">
+<meta property="og:url" content="http://blog.chzh9311.com/page/2/index.html">
 <meta property="og:site_name" content="Aling&#39;s Notebook.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="牧羊人阿凌">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://blog.chzh9311.com/archives/2020/11/">
+<link rel="canonical" href="http://blog.chzh9311.com/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
+    isHome : true,
     isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Aling's Notebook.</title>
+  <title>Aling's Notebook.</title>
   
 
 
@@ -151,71 +151,107 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.chzh9311.com/2020/07-10/PathDisplay/">
 
-  
-  
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 11 篇文章(￣▽￣)~* 继续努力。</span>
-      </div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="牧羊人阿凌">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aling's Notebook.">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07-10/PathDisplay/" class="post-title-link" itemprop="url">RVIZ中利用markers标记历史路径（超详细）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-10 16:20:11" itemprop="dateCreated datePublished" datetime="2020-07-10T16:20:11+08:00">2020-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-08 11:36:47" itemprop="dateModified" datetime="2020-11-08T11:36:47+08:00">2020-11-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E5%AE%9E%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">操作实录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近有道作业题需要将机器人的历史路径显示出来，但是网上很多相关的教程都是搬运了官网的链接，并没有详细的操作流程。。。因此我又花费了很多时间去 ros 官网上学习 marker 的用法，学习怎么写 publisher 和 subscriber，最终成功将路径显示了出来。这篇文章是对这个过程的详细的介绍，原理和代码实践部分会分开，因此如果你赶时间只要一个结果的话，把详细的讲解跳过即可。不过我还是推荐看完，毕竟<del>我花了这么多精力来写</del>知其然也要知其所以然。</p>
+<p>（我是 ROS 新手，从作业这一点也应该看出来了 XD，有不对的地方欢迎指正）</p>
+<h2 id="你应该已经完成了的准备工作"><a href="#你应该已经完成了的准备工作" class="headerlink" title="你应该已经完成了的准备工作"></a>你应该已经完成了的准备工作</h2><ul>
+<li>已经配置好了 ROS工作环境。这一点不用多说，参考 <a target="_blank" rel="noopener" href="http://wiki.ros.org">ROS wiki</a>。</li>
+<li>这里我用的是 Gazebo 仿真环境和 RVIZ 可视化工具，这两个东西是安装ros时用官网上那个最全的安装包里自带（这里展示的是 kinetic 版本的安装命令，其他的版本到上面的链接里面找）：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt install ros-kinetic-desktop-full</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>已经跟着 ROS wiki 建立了 catkin 工作区，我这里的工作区就是 wiki 上的 <code>~/catkin_ws</code>，如果你的不是在用户根目录下记得在后面执行命令的时候改掉。</p>
+</li>
+<li><p>工作区目录下的 <code>src</code> 目录在系统的 <code>ROS_PACKAGE_PATH</code> 环境变量中，不在的话可以这样设置：</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> ROS_PACKAGE_PATH=<span class="variable">$&#123;ROS_PACKAEG_PATH&#125;</span>:<span class="variable">$&#123;HOME&#125;</span>/catkin_ws/src</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07-10/PathDisplay/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-19T22:07:03+08:00"
-              content="2020-11-19">
-          11-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11-19/windows-atom-python-venv/" itemprop="url">
-            <span itemprop="name">如何在 Windows 下配置 Atom 的 Python 虚拟环境</span>
-          </a>
-      </div>
-
-    </header>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-05T14:59:15+08:00"
-              content="2020-11-05">
-          11-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11-05/quaternion/" itemprop="url">
-            <span itemprop="name">详解四元数与旋转</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
   
   
 
+
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 
