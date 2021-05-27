@@ -214,10 +214,11 @@
           <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近有道作业题需要将机器人的历史路径显示出来，但是网上很多相关的教程都是搬运了官网的链接，并没有详细的操作流程。。。因此我又花费了很多时间去 ros 官网上学习 marker 的用法，学习怎么写 publisher 和 subscriber，最终成功将路径显示了出来。这篇文章是对这个过程的详细的介绍，原理和代码实践部分会分开，因此如果你赶时间只要一个结果的话，把详细的讲解跳过即可。不过我还是推荐看完，毕竟<del>我花了这么多精力来写</del>知其然也要知其所以然。</p>
 <p>（我是 ROS 新手，从作业这一点也应该看出来了 XD，有不对的地方欢迎指正）</p>
 <h2 id="你应该已经完成了的准备工作"><a href="#你应该已经完成了的准备工作" class="headerlink" title="你应该已经完成了的准备工作"></a>你应该已经完成了的准备工作</h2><ul>
-<li>已经配置好了 ROS工作环境。这一点不用多说，参考 <a target="_blank" rel="noopener" href="http://wiki.ros.org">ROS wiki</a>。</li>
+<li>已经配置好了 ROS工作环境。这一点不用多说，参考 <a target="_blank" rel="noopener" href="http://wiki.ros.org/">ROS wiki</a>。</li>
 <li>这里我用的是 Gazebo 仿真环境和 RVIZ 可视化工具，这两个东西是安装ros时用官网上那个最全的安装包里自带（这里展示的是 kinetic 版本的安装命令，其他的版本到上面的链接里面找）：</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt install ros-kinetic-desktop-full</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><p>已经跟着 ROS wiki 建立了 catkin 工作区，我这里的工作区就是 wiki 上的 <code>~/catkin_ws</code>，如果你的不是在用户根目录下记得在后面执行命令的时候改掉。</p>
 </li>

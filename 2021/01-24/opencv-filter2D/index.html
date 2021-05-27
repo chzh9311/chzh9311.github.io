@@ -230,15 +230,19 @@
       
         <h1 id="API"><a href="#API" class="headerlink" title="API"></a>API</h1><p>照例，我们搬一下官网的 API：</p>
 <h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::filter2D</span><span class="params">(InputArray   src,</span></span></span><br><span class="line"><span class="function"><span class="params">                  OutputArray  dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">int</span>          ddepth,</span></span></span><br><span class="line"><span class="function"><span class="params">                  InputArray   kernel,</span></span></span><br><span class="line"><span class="function"><span class="params">                  Point        anchor=Point(<span class="number">-1</span>, <span class="number">-1</span>),</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">double</span>       delta=<span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">int</span>          borderType=BORDER_DEFAULT</span></span></span><br><span class="line"><span class="function"><span class="params">                  )</span></span></span><br></pre></td></tr></table></figure>
+
 <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dst=cv.filter2D(src, ddepth, kernel[, dst[, anchor[, delta[, borderType]]]])</span><br></pre></td></tr></table></figure>
+
 <h1 id="函数详解"><a href="#函数详解" class="headerlink" title="函数详解"></a>函数详解</h1><p>这个函数一般是用于图像的卷积，但 OpenCV 文档里说这个函数不完全等于图像卷积。这一点说实话我看到的时候也震惊到了，我一直是拿它当卷积来用的。但是仔细考虑后，我认为这一点完全是定义上的差异，日常用的图像卷积定义和这个函数的功能实际上是一致的。</p>
 <a id="more"></a>
+
 <h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>直接上手做往往能给人最直观的感受。因此，最开始这里我要放一个使用这个函数的最小化程序，可以称之为该函数的 hello world 程序。这个程序跑通了，就可以很方便地尝试其他参数的作用了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># HelloWrold Program of cv.filter2D</span></span><br><span class="line"><span class="comment"># by Hysteresis on 2021/1/18</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    img = cv.imread(<span class="string">&quot;你想读的图片&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 定义卷积核</span></span><br><span class="line">    kernel = np.ones((<span class="number">10</span>， <span class="number">10</span>)) / <span class="number">100</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 执行滤波</span></span><br><span class="line">    avg_filtered = cv.filter2D(img, <span class="number">-1</span>, kernel)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 显示图片</span></span><br><span class="line">    cv.imshow(<span class="string">&quot;Average filtered&quot;</span>, avg_filtered)</span><br><span class="line">    cv.waitKey(<span class="number">0</span>)</span><br><span class="line">    cv.destroyAllWindows()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
 <p>这个程序读取一张图片，并将其通过10 x 10 的卷积核作均值滤波并显示结果。</p>
 <img src="/2021/01-24/opencv-filter2D/effect.png" class="">
+
 <h2 id="参数详解"><a href="#参数详解" class="headerlink" title="参数详解"></a>参数详解</h2><p>同样的，这里把各个参数打一张表：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -248,8 +252,7 @@
 <th>具体含义</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td><code>src</code></td>
 <td><code>numpy.ndarray</code></td>
 <td>是</td>
@@ -285,13 +288,10 @@
 <td>否（<code>cv.BORDER_DEFALUT</code>)</td>
 <td>边缘类型</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h3 id="src"><a href="#src" class="headerlink" title="src"></a>src</h3><p>这个参数没什么好说的，就是原图像。它可以是任何色彩模式，这就意味着如果你把原本送到这个函数里的图片从黑白变成了彩色（单通道变成了 3 通道），你并不需要更改其他参数。本身，对多通道的图像，卷积就是以通道为单位进行的。</p>
 <h3 id="ddepth"><a href="#ddepth" class="headerlink" title="ddepth"></a>ddepth</h3><p>这个参数有点费解了。大部分情况下不需要管它是干嘛的，直接把它设成 -1 就没有任何问题。</p>
 <p>参数名 <code>ddepth</code> ，英文是 desired depth，即期望深度。什么意思呢？我们来看它的可能取值表（来自<a target="_blank" rel="noopener" href="https://docs.opencv.org/4.5.1/d4/d86/group__imgproc__filter.html#filter_depths">这里</a>）：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -299,8 +299,7 @@
 <th>期望深度（<code>ddepth</code>）</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>CV_8U</td>
 <td>-1/CV_16S/CV_32F/CV_64F</td>
 </tr>
@@ -316,11 +315,10 @@
 <td>CV_64F</td>
 <td>-1/CV_64F</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>这个表里的一大串 <code>CV</code> 打头的符号到底是什么意思呢？实际上这些符号的末尾字母对应了数据类型：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">U == Unsigned int  <span class="comment"># 无符号整型</span></span><br><span class="line">S == Signed int    <span class="comment"># 有符号整型</span></span><br><span class="line">F == Float         <span class="comment"># 浮点型</span></span><br></pre></td></tr></table></figure>
+
 <p>中间的数字很显然代表了数据类型所占用的空间（bit）。所以，<strong>所谓深度，其实指的是数据类型</strong>。</p>
 <p>那就好说了，你会发现这里其实是规定了输出数据的类型，包括每个通道的每个像素占用多少空间。输出数据的类型必须根据上面的表格中输入对应的类型指定。这里 <strong>-1 表示输出类型和输入相同</strong>。</p>
 <p>不过，值得注意的是，似乎有些数据类型无法通过 <code>cv2.imshow</code> 正常显示，可以用 <code>matplotlib.pyplot.imshow</code> 来代替。</p>
@@ -328,19 +326,19 @@
 <h3 id="kernel-amp-anchor"><a href="#kernel-amp-anchor" class="headerlink" title="kernel &amp; anchor"></a>kernel &amp; anchor</h3><p>这两个参数都是卷积相关的，因此放在一节里面讲述。接下来的内容假设你已经了解了<strong>图像卷积</strong>。</p>
 <p>这里，<code>kernel</code> 很显然表示的是卷积核，这是一个 <code>numpy.ndarray</code> 类型的矩阵。这个矩阵的生成可以用 <code>numpy</code> 自带的函数，但是对于复杂一些的卷积核，OpenCV 内部的一些函数显然更合适。如 <code>getStructuringElement</code>，<code>getGaussianKernel</code>，前者用于获取特定形状的核，后者则是高斯核生生成器（不过要注意生成的是一个向量）。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法一示例</span></span><br><span class="line">kernel = cv.getStructuringElement(cv.MORPH_RECT, (<span class="number">11</span>, <span class="number">11</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法二示例</span></span><br><span class="line">vector = cv.getGaussianKernel(<span class="number">11</span>, <span class="number">-1</span>)</span><br><span class="line">kernel = vector @ vector.T</span><br></pre></td></tr></table></figure>
+
 <p><code>anchor</code> 则表示锚点。什么叫锚点呢？看下面这张图：</p>
 <img src="/2021/01-24/opencv-filter2D/convolution.png" class="">
-<p>可以说，锚点 <code>anchor</code> 决定了卷积核相对于生成目标点的位置。虽然锚点是相对于卷积核来定义的，但是卷积的过程更像是通过锚点去寻找卷积核。遍历图像中的每一个像素，以每一个像素为锚点，按照相对位置生成卷积范围，和卷积核对应元素相乘再求和得到目标图像中对应像素的值。可以用公式表示成：</p>
-<script type="math/tex; mode=display">
-\text{dst}(x, y)=\sum_{0\leq x^\prime < \text{kernel.cols} \\ 0 \leq y^\prime<\text{kernel.rows}} \text{kernel}(x^\prime, y^\prime) \times \text{src}(x+x^\prime-\text{anchor.x}, y+y^\prime-\text{anchor.y})</script><p>这实际上就是一般的图像卷积计算方法。OpenCV 文档里面叙述的卷积定义则是需要将卷积核围绕锚点对称变换，再用上面的公式计算。这种方法更接近卷积原始的定义，但是对图像的卷积一般的应用而言（滤波、深度学习）这两种定义实际上没有什么区别。、</p>
+
+<p>可以说，锚点 <code>anchor</code> 决定了卷积核相对于生成目标点的位置。虽然锚点是相对于卷积核来定义的，但是卷积的过程更像是通过锚点去寻找卷积核。遍历图像中的每一个像素，以每一个像素为锚点，按照相对位置生成卷积范围，和卷积核对应元素相乘再求和得到目标图像中对应像素的值。可以用公式表示成：<br>$$<br>\text{dst}(x, y)=\sum_{0\leq x^\prime &lt; \text{kernel.cols} \ 0 \leq y^\prime&lt;\text{kernel.rows}} \text{kernel}(x^\prime, y^\prime) \times \text{src}(x+x^\prime-\text{anchor.x}, y+y^\prime-\text{anchor.y})<br>$$<br>这实际上就是一般的图像卷积计算方法。OpenCV 文档里面叙述的卷积定义则是需要将卷积核围绕锚点对称变换，再用上面的公式计算。这种方法更接近卷积原始的定义，但是对图像的卷积一般的应用而言（滤波、深度学习）这两种定义实际上没有什么区别。、</p>
 <p><strong>锚点用一个元组指定，是相对于卷积核左上角的坐标，从 0 开始</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 替换掉 HelloWorld 程序的对应行。注意这里已经不能说是均值滤波了。</span></span><br><span class="line">avg_filtered = cv.filter2D(img, <span class="number">-1</span>, kernel, (<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<h2 id="delta"><a href="#delta" class="headerlink" title="delta"></a>delta</h2><p>这个参数的存在其实有些费解，它的效果很简单，就是把卷积的结果加上一个固定的数字。直观上将，它将整个图像变亮或者变暗了。从应用上来说，它实际上将卷积过程扩展成了一般的线性运算（$*$ 表示卷积）：</p>
-<script type="math/tex; mode=display">
-\text{dst} = \text{kernel} * \text{src} +\text{delta}</script><p>这个线性运算可以将结果限定在某一符合要求的范围内（比如大于 0），而且不会阻断梯度的传递。</p>
+
+<h2 id="delta"><a href="#delta" class="headerlink" title="delta"></a>delta</h2><p>这个参数的存在其实有些费解，它的效果很简单，就是把卷积的结果加上一个固定的数字。直观上将，它将整个图像变亮或者变暗了。从应用上来说，它实际上将卷积过程扩展成了一般的线性运算（$*$ 表示卷积）：<br>$$<br>\text{dst} = \text{kernel} * \text{src} +\text{delta}<br>$$<br>这个线性运算可以将结果限定在某一符合要求的范围内（比如大于 0），而且不会阻断梯度的传递。</p>
 <h2 id="borderType"><a href="#borderType" class="headerlink" title="borderType"></a>borderType</h2><p>这个参数更改的是 border 的生成方式。这个 border，也就是边缘，是在靠近边缘的部分卷积时用到的，参考上面那张图。无论 <code>anchor</code> 是什么，总有些边缘上的点对应的卷积范围无法完全落在原图内，这就需要对原图进行扩展。扩展的方法就是我们这里参数的含义。</p>
 <p>这个参数取值是 OpenCV 里的 <code>cv::BorderTypes</code> enum 类定义的值，其可能取值及其对于边缘的作用结果如下图所示（图片来自 OpenCV Python 教程）：</p>
 <img src="/2021/01-24/opencv-filter2D/border.jpg" class="">
+
 <p>要注意几点：</p>
 <ul>
 <li><code>cv.BORDER_WARP</code> 在这个函数里面是不支持的；</li>
@@ -348,8 +346,11 @@
 </ul>
 <h1 id="扩展——滤波相关函数"><a href="#扩展——滤波相关函数" class="headerlink" title="扩展——滤波相关函数"></a>扩展——滤波相关函数</h1><p>图像滤波是一个很常用的功能，对此，OpenCV 也定义了很多函数。这里介绍的 <code>cv.filter2D</code> 是这些函数中可控性最高的，因为你可以用自定义的核进行卷积。但是一些常用的滤波，我们可以不必自己定义相应的核，直接用定义好的函数就可以了。</p>
 <h2 id="均值滤波"><a href="#均值滤波" class="headerlink" title="均值滤波"></a>均值滤波</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dst = cv.blur(img, (<span class="number">11</span>, <span class="number">11</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等效于：</span></span><br><span class="line">dst = cv.filter2D(img, <span class="number">-1</span>, np.ones((<span class="number">11</span>, <span class="number">11</span>))/<span class="number">11</span>**<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
 <h2 id="高斯滤波"><a href="#高斯滤波" class="headerlink" title="高斯滤波"></a>高斯滤波</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dst = cv.GaussianBlur(img, (<span class="number">11</span>, <span class="number">11</span>), <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等效于</span></span><br><span class="line">vector = cv.getGaussianKernel(<span class="number">11</span>, <span class="number">-1</span>)</span><br><span class="line">kernel = vector @ vector.T</span><br><span class="line">dst = cv.filter2D(img, <span class="number">-1</span>, kernel)</span><br></pre></td></tr></table></figure>
+
 <h2 id="中值滤波"><a href="#中值滤波" class="headerlink" title="中值滤波"></a>中值滤波</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dst = cv.medianBlur(img, <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
 <p>注意中值滤波是取中位数作为目标值，是一个非线性滤波子，因此无法通过线性滤波的 <code>cv.filter2D</code> 来等效实现。</p>
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://docs.opencv.org/4.5.1/">最新版 OpenCV 官方文档</a></li>
