@@ -21,11 +21,11 @@ repository               : "chzh9311/chzh9311.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   name             : "Zhuo Chen"
   pronouns         : # example: "she/her"  
   bio              : "PhD at University of Birmingham"
-  location         : "Edgbaston, Birmingham, UK"
+  location         : "Edgbaston, Birmingham B15 2TT, UK"
   employer         : "University of Birmingham"
   uri              : # URL
   email            : "ZXC417@student.bham.ac.uk" 
