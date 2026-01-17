@@ -54,6 +54,14 @@
   img {
     width: 100%;
   }
+
+  // Hide sidebar completely when empty (no author profile)
+  &:empty {
+    display: none;
+    width: 0;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .sidebar__right {

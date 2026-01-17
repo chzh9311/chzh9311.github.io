@@ -2,7 +2,7 @@
 layout: archive
 title: "CV"
 permalink: /cv/
-author_profile: true
+author_profile: false
 redirect_from:
   - /resume
 ---
@@ -17,7 +17,7 @@ redirect_from:
 
 <div style='display:flex; justify-content: space-between; font-weight:normal'>    <span align=left style='font-style:italic'>PhD School of Computer Sci FT</span> <span style='float:right'>Sept. 2024 – Present</span></div>{% endraw %}
 
-* Research Topic: Joint Reconstruction of Hands and Objects.
+* Research Topic: Human Grasp Generation
 
 {% raw %}
 <div style='display:flex; justify-content: space-between; font-weight:bold'>    <span align=left>Shanghai Jiao Tong University (SJTU)</span> <span style='float:right'>Shanghai, China</span></div>
@@ -33,28 +33,29 @@ redirect_from:
 
 <div style='display:flex; justify-content: space-between; font-weight:normal'>    <div align=left style='font-style:italic'>BEng Automation</div>    <div style='float:right'>Sept. 2017 – Jun. 2021</div></div>{% endraw %}
 
-* Average Credit Point: **89.09**/100. Ranking: **9**/107
+* Average Credit Point: **89.09**/100.
 * Bachelor Thesis Project: Intelligent Interactive Design for Exercise Rehabilitation Based on 3D Human Pose Estimation.
 
 ## <i class="fas fa-book"></i> Publications
-
-* <u>Zhuo Chen</u>, Xu Zhao, and Xiaoyue Wan. <a href='https://link.springer.com/chapter/10.1007/978-3-031-20065-6_40'>Structural triangulation: A closed-form solution to constrained 3d human pose estimation</a>. In European Conference on Computer Vision (ECCV), Sept 2022. (Published)
-* <u>Zhuo Chen</u> and Xu Zhao. Incorporating Limb Orientation Fields to Improve Stereo-View Human Pose Estimation[J]. IEEE Transactions on Multimedia, 2023. (Preprint)
-* Xiaoyue Wan, Xu Zhao, and <u>Zhuo Chen</u>. [View Consistency Aware Holistic Triangulation for 3D Human Pose Estimation](https://arxiv.org/abs/2302.11301)[J]. Computer vision and image understanding, 2023. （Accepted)
+* <u>Zhuo Chen</u>, Zhongqun Zhang, Yihua Cheng, Aleš Leonardis, and Hyung Jin Chang. [Force-Aware 3D Contact Modeling for Stable Grasp Generation](https://ieeexplore.ieee.org/abstract/document/10551483)[C]. In Annual AAAI Conference on Artificial Intelligence (AAAI), 2026.
+* <u>Zhuo Chen</u>, Xiaoyue Wan, Yiming Bao, and Xu Zhao. [Joint-limb compound triangulation with co-fixing for stereoscopic human pose estimation](https://ieeexplore.ieee.org/abstract/document/10551483) [J]. IEEE Transactions on Multimedia, 2024.
+* <u>Zhuo Chen</u>, Xu Zhao, and Xiaoyue Wan. [Structural triangulation: A closed-form solution to constrained 3d human pose estimation](https://link.springer.com/chapter/10.1007/978-3-031-20065-6_40) [C]. In European Conference on Computer Vision (ECCV), 2022.
+* Haifeng Zhong, Fan Tang, <u>Zhuo Chen</u>, Hyung Jin Chang, and Yixing Gao. [AMDANet: Attention-Driven Multi-Perspective Discrepancy Alignment for RGB-Infrared Image Fusion and Segmentation](https://openaccess.thecvf.com/content/ICCV2025/html/Zhong_AMDANet_Attention-Driven_Multi-Perspective_Discrepancy_Alignment_for_RGB-Infrared_Image_Fusion_and_ICCV_2025_paper) [C]. In IEEE/CVF International Conference on Computer Vision (ICCV) 2025.
+* Xiaoyue Wan, <u>Zhuo Chen</u>, Xu Zhao. [Rsb-pose: Robust short-baseline binocular 3d human pose estimation with occlusion handling](https://ieeexplore.ieee.org/abstract/document/10770149) [J]. IEEE Transactions on Image Processing (TIP), 2024.
+* Xiaoyue Wan, <u>Zhuo Chen</u>, Bingzhi Duan, Xu Zhao. [Dual-diffusion for binocular 3D human pose estimation](https://proceedings.neurips.cc/paper_files/paper/2024/hash/8ea50bf458f6070548b11babbe0bf89b-Abstract-Conference) [C]. In Advances in Neural Information Processing Systems (NeurIPS) 2024.
+* Xiaoyue Wan, <u>Zhuo Chen</u> and Xu Zhao. [View Consistency Aware Holistic Triangulation for 3D Human Pose Estimation](https://arxiv.org/abs/2302.11301) [J]. Computer vision and image understanding (CVIU), 2023.
 
 ## <i class="fas fa-microscope"></i> Research and Project Experience
-
 {% raw %}
 
-<div style='display:flex; justify-content: space-between'>    <div align=left style='font-weight:bold'>Motion Limb Recognition Towards Rehabilitation</div> <div style='float:right'>May. 2021- Sept. 2021</div></div>{% endraw %}
+<div style='display:flex; justify-content: space-between'>    <div align=left style='font-weight:bold'>Parkinson’s Disease Intelligent Diagnosis</div> <div style='float:right'>Mar. 2024 – Jul. 2024</div></div>{% endraw %}
 
-Aid exercise rehabilitation using pose estimation from short-baselined binocular vision.
+Develop binocular 3D human pose estimation algorithms and deploy on Nvidia Jetson computational unit for early diagnosis of Parkinson’s Disease. 
 
 *Research Assistant*
 
-* Designed and Implemented the bi-directional conversion between joint positions and BVH data.
-* Proposed *virtual joints* to ensure the uniqueness in the above converting process.
-* Proposed Limited Pictorial Structure Model (LPSM) for short-baseline binocular pose estimation, with an ~87× speed up in MATLAB compared to PSM.
+*	Deployed state-of-the-art HPE algorithms (e.g., HRNet, ViTPose) on the device and achieved 20~30 FPS.
+
 
 {% raw %}
 
@@ -79,6 +80,18 @@ Accelerate OpenCV functions using Halide framework.
 * Reimplemented KNN-search algorithm and revealed current drawbacks of Halide in implementing tree structures.
 * Met with Huawei staff regularly reporting progress and advising for promoting Halide framework.
 
+{% raw %}
+
+<div style='display:flex; justify-content: space-between'>    <div align=left style='font-weight:bold'>Motion Limb Recognition Towards Rehabilitation</div> <div style='float:right'>May. 2021- Sept. 2021</div></div>{% endraw %}
+
+Aid exercise rehabilitation using pose estimation from short-baselined binocular vision.
+
+*Research Assistant*
+
+* Designed and Implemented the bi-directional conversion between joint positions and BVH data.
+* Proposed *virtual joints* to ensure the uniqueness in the above converting process.
+* Proposed Limited Pictorial Structure Model (LPSM) for short-baseline binocular pose estimation, with an ~87× speed up in MATLAB compared to PSM.
+
 <!-- ## <i class="fas fa-award"></i> Scholarships and Awards
 
 {% raw %}
@@ -95,19 +108,29 @@ Accelerate OpenCV functions using Halide framework.
 
 {% raw %}
 
-<div style='display:flex; justify-content: space-between'>  <div align=left>Fundamentals of Digital Image Processing (<i>Teaching Assistant</i>)</div>  <div style='float:right'>Sept. 2023 - Jan. 2024</div></div>{% endraw %}
+<div style='display:flex; justify-content: space-between'>  <div align=left>Data Structure & Algorithm (<i>Teaching Assistant</i>)</div>  <div style='float:right'>Jan. 2026 - May 2026</div></div>{% endraw %}
+
+
+{% raw %}
+
+<div style='display:flex; justify-content: space-between'>  <div align=left>Computer Vision & Imaging (<i>Teaching Assistant</i>)</div>  <div style='float:right'>Sept. 2025 - Jan. 2026</div></div>{% endraw %}
+
+
+{% raw %}
+
+<div style='display:flex; justify-content: space-between'>  <div align=left>Fundamentals of Digital Image Processing (<i>Teaching Assistant</i>)</div>  <div style='float:right'>Sept. 2023 - Mar. 2024</div></div>{% endraw %}
 
 ## <i class="fa-solid fa-magnifying-glass-chart"></i> Academic Services
 
-**Conference Reviewer**:
+Reviewer for:
 
-* NeurIPS 2023, 2024;
-* ECCV 2022, 2024;
-* CVPR 2022
+*	AI conferences like ECCV, ICCV, CVPR, NeurIPS, and ICML since 2022.
+*	TCSVT in 2024,2025.
 
-## <i class="fas fa-code-merge"></i> Related Skills
+
+<!-- ## <i class="fas fa-code-merge"></i> Related Skills
 
 * **Python**: Fully master ML coding and DNN & parallelism implementation using PyTorch.
 * **C++**: Skilled in coding and compiling.
 * **MATLAB**: Skilled in ML experiments.
-* **Vicon** capture system: Capable of manipulating Nexus in capturing label data and post-processing.
+* **Vicon** capture system: Capable of manipulating Nexus in capturing label data and post-processing. -->

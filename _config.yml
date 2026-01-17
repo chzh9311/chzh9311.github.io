@@ -21,7 +21,7 @@ repository               : "chzh9311/chzh9311.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   name             : "Zhuo Chen"
   pronouns         : # example: "she/her"  
   bio              : "PhD at University of Birmingham"
@@ -260,7 +260,7 @@ defaults:
       type: publications
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       share: true
       comments: true
   # _portfolio

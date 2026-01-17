@@ -4,14 +4,20 @@
 
 .archive {
   margin-bottom: 2em;
+  width: 100%;
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
 
   @include breakpoint($medium) {
-    @include span(12 of 12);
+    width: 100%;
   }
 
   @include breakpoint($large) {
-    @include span(10 of 12 last);
-    @include prefix(0.5 of 12);
+    width: 90%;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   a {
@@ -104,6 +110,19 @@
 
   .page__meta {
     margin: 0 0 4px;
+  }
+
+  // Override for publications to use full width
+  .publication-item {
+    margin-right: -$right-sidebar-width-narrow;
+
+    @include breakpoint($large) {
+      margin-right: -$right-sidebar-width;
+    }
+
+    @include breakpoint($x-large) {
+      margin-right: -$right-sidebar-width-wide;
+    }
   }
 }
 
@@ -267,8 +286,8 @@
 
 .publication-teaser {
   flex-shrink: 0;
-  width: 280px;
-  max-width: 280px;
+  width: 30%;
+  max-width: 30%;
 
   @media (max-width: 600px) {
     width: 100%;
