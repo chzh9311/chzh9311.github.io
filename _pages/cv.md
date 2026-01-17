@@ -37,7 +37,7 @@ redirect_from:
 * Bachelor Thesis Project: Intelligent Interactive Design for Exercise Rehabilitation Based on 3D Human Pose Estimation.
 
 ## <i class="fas fa-book"></i> Publications
-* <u>Zhuo Chen</u>, Zhongqun Zhang, Yihua Cheng, Aleš Leonardis, and Hyung Jin Chang. [Force-Aware 3D Contact Modeling for Stable Grasp Generation](https://ieeexplore.ieee.org/abstract/document/10551483)[C]. In Annual AAAI Conference on Artificial Intelligence (AAAI), 2026.
+* <u>Zhuo Chen</u>, Zhongqun Zhang, Yihua Cheng, Aleš Leonardis, and Hyung Jin Chang. [Force-Aware 3D Contact Modeling for Stable Grasp Generation](https://arxiv.org/abs/2511.13247)[C]. In Annual AAAI Conference on Artificial Intelligence (AAAI), 2026.
 * <u>Zhuo Chen</u>, Xiaoyue Wan, Yiming Bao, and Xu Zhao. [Joint-limb compound triangulation with co-fixing for stereoscopic human pose estimation](https://ieeexplore.ieee.org/abstract/document/10551483) [J]. IEEE Transactions on Multimedia, 2024.
 * <u>Zhuo Chen</u>, Xu Zhao, and Xiaoyue Wan. [Structural triangulation: A closed-form solution to constrained 3d human pose estimation](https://link.springer.com/chapter/10.1007/978-3-031-20065-6_40) [C]. In European Conference on Computer Vision (ECCV), 2022.
 * Haifeng Zhong, Fan Tang, <u>Zhuo Chen</u>, Hyung Jin Chang, and Yixing Gao. [AMDANet: Attention-Driven Multi-Perspective Discrepancy Alignment for RGB-Infrared Image Fusion and Segmentation](https://openaccess.thecvf.com/content/ICCV2025/html/Zhong_AMDANet_Attention-Driven_Multi-Perspective_Discrepancy_Alignment_for_RGB-Infrared_Image_Fusion_and_ICCV_2025_paper) [C]. In IEEE/CVF International Conference on Computer Vision (ICCV) 2025.
