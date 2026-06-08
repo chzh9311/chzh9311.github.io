@@ -1,0 +1,450 @@
+---
+---
+
+/* ============================================================
+   Personal Site — Zhuo Chen
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Design Tokens ── */
+:root {
+  --cream:        #f4eed7;
+  --cream-dark:   #ede3c0;
+  --black:        #1a1a1a;
+  --teal:         #006680;
+  --teal-light:   #008fa8;
+  --gold:         #aa8800;
+  --orange:       #cc6600;
+  --gray:         #666;
+  --white:        #ffffff;
+
+  --font-heading: 'Libre Baskerville', Georgia, serif;
+  --font-body:    Arial, 'Gill Sans', 'Trebuchet MS', Arial, sans-serif;
+
+  --nav-height: 62px;
+  --content-max: 860px;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--teal); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--teal-light); text-decoration: underline; }
+
+/* ── Navigation ── */
+.site-nav {
+  background: var(--cream);
+  border-bottom: 1.5px solid var(--gold);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(170,136,0,0.08);
+}
+
+.nav-inner {
+  max-width: var(--content-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  font-style: italic;
+}
+.nav-brand:hover { color: var(--gold); text-decoration: none; }
+
+.nav-links { display: flex; list-style: none; gap: 30px; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--gold);
+  border-color: var(--gold);
+  text-decoration: none;
+}
+
+/* ── Hero Header Band ── */
+.hero-band {
+  background: var(--cream);
+  border-bottom: 1.5px solid var(--gold);
+  padding: 36px 24px 32px;
+}
+
+.hero-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.hero-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+
+.hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* Name + nav on the same row */
+.hero-top-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hero-nav { flex-shrink: 0; }
+
+.hero-nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.hero-nav-links a {
+  font-family: var(--font-body);
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.hero-nav-links a:hover,
+.hero-nav-links a.active {
+  color: var(--black);
+  border-color: var(--gold);
+  text-decoration: none;
+}
+
+.hero-name {
+  font-family: 'Abril Fatface', var(--font-heading), Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  line-height: 1;
+}
+
+.hero-affil {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+.hero-links {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.hero-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal);
+  transition: color 0.2s;
+}
+.hero-link:hover { color: var(--teal-light); text-decoration: none; }
+.hero-link svg { width: 20px; height: 20px; }
+
+/* ── Full-bleed Section Bands ── */
+.page-band {
+  padding: 40px 24px;
+}
+
+.band-cream { background: var(--cream); }
+.band-white { background: var(--white); }
+
+.band-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+/* ── Section Headings ── */
+.section-heading {
+  font-family: 'Abril Fatface', var(--font-heading), Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 18px;
+}
+
+/* ── About ── */
+.about-body p {
+  color: var(--black);
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.about-body p:last-child { margin-bottom: 0; }
+
+/* ── News ── */
+.news-table { width: 100%; border-collapse: collapse; }
+
+.news-date {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray);
+  white-space: nowrap;
+  padding: 3px 20px 3px 0;
+  vertical-align: top;
+  width: 90px;
+}
+
+.news-text {
+  font-size: 1.2rem;
+  color: var(--black);
+  padding: 3px 0;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.news-text a { color: var(--teal); font-weight: 600; }
+
+/* ── Scholar link ── */
+.scholar-link {
+  font-size: 1.2rem;
+    margin-bottom: 20px;
+  color: var(--gray);
+}
+.scholar-link a { color: var(--teal); font-weight: 600; }
+
+/* ── Publications ── */
+.pub-list { list-style: none; padding: 0; }
+
+.pub-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(170,136,0,0.15);
+  align-items: flex-start;
+}
+.pub-item:last-child { border-bottom: none; }
+
+.pub-teaser {
+  width: 260px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  object-fit: cover;
+  align-self: stretch;
+}
+
+.pub-number {
+  font-family: var(--font-body);
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 24px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.pub-body { flex: 1; min-width: 0; }
+
+.pub-title {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 3px;
+  line-height: 1.4;
+}
+
+.pub-authors { font-size: 0.85rem; color: var(--gray); margin-bottom: 3px; }
+.pub-authors .self { color: var(--black); font-weight: 600; }
+
+.pub-venue {
+  font-size: 0.85rem;
+  color: var(--orange);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.pub-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.68rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.badge:hover { opacity: 0.75; text-decoration: none; }
+.badge-pdf  { background: var(--teal);  color: white; }
+.badge-code { background: var(--black); color: white; }
+.badge-page { background: var(--gold);  color: white; }
+
+/* ── CV ── */
+.cv-entries { display: flex; flex-direction: column; gap: 24px; }
+
+.cv-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cv-institution {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.cv-location {
+  font-size: 0.88rem;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+.cv-entry-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.cv-degree {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--gray);
+}
+
+.cv-dates {
+  font-size: 0.88rem;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+.cv-desc {
+  font-size: 0.95rem;
+  color: var(--black);
+  margin-top: 4px;
+}
+
+.cv-role {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--orange);
+  margin-top: 2px;
+}
+
+.cv-bullets {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  font-size: 0.92rem;
+  color: var(--black);
+  line-height: 1.6;
+}
+
+.cv-bullets li { margin-bottom: 3px; }
+
+.cv-entry--inline {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(170,136,0,0.12);
+  padding-bottom: 8px;
+}
+.cv-entry--inline:last-child { border-bottom: none; padding-bottom: 0; }
+
+.cv-role-inline {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--orange);
+  flex: 1;
+}
+
+/* ── Footer ── */
+.site-footer {
+  background: var(--cream);
+  border-top: 1.5px solid var(--gold);
+  padding: 14px 24px;
+  text-align: center;
+}
+.footer-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  font-size: 0.78rem;
+  color: var(--gray);
+  font-family: var(--font-body);
+}
+
+/* ── Publications page fallback ── */
+.page-wrapper {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .hero-inner { flex-direction: column; gap: 16px; }
+  .hero-avatar { width: 80px; height: 80px; }
+  .hero-name { font-size: 1.3rem; }
+  .hero-top-row { flex-direction: column; gap: 8px; }
+  .hero-nav-links { gap: 14px; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 0.75rem; }
+}

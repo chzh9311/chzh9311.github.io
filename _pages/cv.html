@@ -1,0 +1,205 @@
+---
+layout: default
+title: CV
+permalink: /cv/
+hide_nav: true
+---
+
+{% include hero.html %}
+
+<!-- ── Education (white) ── -->
+<section class="page-band band-white">
+  <div class="band-inner">
+    <h2 class="section-heading">Education</h2>
+    <div class="cv-entries">
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">University of Birmingham (UoB)</span>
+          <span class="cv-location">Birmingham, United Kingdom</span>
+        </div>
+        <div class="cv-entry-sub">
+          <span class="cv-degree">PhD, School of Computer Science</span>
+          <span class="cv-dates">Sept. 2024 – Present</span>
+        </div>
+        <ul class="cv-bullets">
+          <li>Research Topic: Human Grasp Generation</li>
+        </ul>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">Shanghai Jiao Tong University (SJTU)</span>
+          <span class="cv-location">Shanghai, China</span>
+        </div>
+        <div class="cv-entry-sub">
+          <span class="cv-degree">MSc, Control Science and Engineering</span>
+          <span class="cv-dates">Sept. 2021 – Mar. 2024</span>
+        </div>
+        <ul class="cv-bullets">
+          <li>GPA: <strong>3.75</strong> / 4.00</li>
+          <li>Master's Thesis: Stereoscopic 3D Human Pose Estimation via Structurally Constrained Optimization</li>
+        </ul>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">Shanghai Jiao Tong University (SJTU)</span>
+          <span class="cv-location">Shanghai, China</span>
+        </div>
+        <div class="cv-entry-sub">
+          <span class="cv-degree">BEng, Automation</span>
+          <span class="cv-dates">Sept. 2017 – Jun. 2021</span>
+        </div>
+        <ul class="cv-bullets">
+          <li>Average Credit Point: <strong>89.09</strong> / 100</li>
+          <li>Bachelor Thesis: Intelligent Interactive Design for Exercise Rehabilitation Based on 3D Human Pose Estimation</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Publications (cream) ── -->
+<section class="page-band band-cream">
+  <div class="band-inner">
+    <h2 class="section-heading">Publications</h2>
+    <ol class="pub-list" reversed>
+      {% assign pubs = site.data.publications %}
+      {% for pub in pubs %}
+      <li class="pub-item">
+        <div class="pub-body">
+          <div class="pub-title">{{ pub.title }}</div>
+          <div class="pub-authors">
+            {% assign parts = pub.authors | split: "{self}" %}
+            {% if parts.size > 1 %}
+              {{ parts[0] }}<span class="self">{% assign rest = parts[1] | split: "," %}{{ rest[0] }}</span>{% assign rest2 = parts[1] | split: rest[0] %}{{ rest2[1] }}
+            {% else %}
+              {{ pub.authors }}
+            {% endif %}
+          </div>
+          <div class="pub-venue">{{ pub.venue }}</div>
+          <div class="pub-badges">
+            {% if pub.pdf and pub.pdf != "" %}
+              <a class="badge badge-pdf" href="{{ pub.pdf }}" target="_blank" rel="noopener">PDF</a>
+            {% endif %}
+            {% if pub.code and pub.code != "" %}
+              <a class="badge badge-code" href="{{ pub.code }}" target="_blank" rel="noopener">Code</a>
+            {% endif %}
+            {% if pub.page and pub.page != "" %}
+              <a class="badge badge-page" href="{{ pub.page }}" target="_blank" rel="noopener">Project</a>
+            {% endif %}
+            {% if pub.doi and pub.doi != "" %}
+              <a class="badge badge-pdf" href="{{ pub.doi }}" target="_blank" rel="noopener">DOI</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ── Research Experience (white) ── -->
+<section class="page-band band-white">
+  <div class="band-inner">
+    <h2 class="section-heading">Research &amp; Project Experience</h2>
+    <div class="cv-entries">
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">Parkinson's Disease Intelligent Diagnosis</span>
+          <span class="cv-dates">Mar. 2024 – Jul. 2024</span>
+        </div>
+        <p class="cv-desc">Develop binocular 3D human pose estimation algorithms and deploy on Nvidia Jetson computational unit for early diagnosis of Parkinson's Disease.</p>
+        <p class="cv-role">Research Assistant</p>
+        <ul class="cv-bullets">
+          <li>Deployed state-of-the-art HPE algorithms (e.g., HRNet, ViTPose) on the device and achieved 20–30 FPS.</li>
+        </ul>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">CVLab Human Motion Dataset Capture</span>
+          <span class="cv-dates">Sept. 2022 – Present</span>
+        </div>
+        <p class="cv-desc">Collect a motion capture dataset with novel camera settings, multi-module labels, and rehabilitation-aimed moves.</p>
+        <p class="cv-role">Research Assistant</p>
+        <ul class="cv-bullets">
+          <li>Designed collecting scenarios, including the largest possible common visible range of all cameras inside the capture room and the corresponding camera setting.</li>
+          <li>Managed labelling process using Vicon motion capture system, including marker set preparation, motion capture process, and label data post-processing.</li>
+        </ul>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">Huawei Halide Project</span>
+          <span class="cv-dates">Sept. 2021 – May 2022</span>
+        </div>
+        <p class="cv-desc">Accelerate OpenCV functions using the Halide framework.</p>
+        <p class="cv-role">Software Engineer</p>
+        <ul class="cv-bullets">
+          <li>Reimplemented imresize function and achieved ~15× average speed up.</li>
+          <li>Reimplemented KNN-search algorithm and revealed current drawbacks of Halide in implementing tree structures.</li>
+          <li>Met with Huawei staff regularly reporting progress and advising for promoting Halide framework.</li>
+        </ul>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <span class="cv-institution">Motion Limb Recognition Towards Rehabilitation</span>
+          <span class="cv-dates">May 2021 – Sept. 2021</span>
+        </div>
+        <p class="cv-desc">Aid exercise rehabilitation using pose estimation from short-baselined binocular vision.</p>
+        <p class="cv-role">Research Assistant</p>
+        <ul class="cv-bullets">
+          <li>Designed and implemented the bi-directional conversion between joint positions and BVH data.</li>
+          <li>Proposed <em>virtual joints</em> to ensure uniqueness in the above converting process.</li>
+          <li>Proposed Limited Pictorial Structure Model (LPSM) for short-baseline binocular pose estimation, with an ~87× speed up in MATLAB compared to PSM.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Teaching (cream) ── -->
+<section class="page-band band-cream">
+  <div class="band-inner">
+    <h2 class="section-heading">Teaching Experience</h2>
+    <div class="cv-entries">
+
+      <div class="cv-entry cv-entry--inline">
+        <span class="cv-institution">Data Structure &amp; Algorithm</span>
+        <span class="cv-role-inline">Teaching Assistant</span>
+        <span class="cv-dates">Jan. 2026 – May 2026</span>
+      </div>
+
+      <div class="cv-entry cv-entry--inline">
+        <span class="cv-institution">Computer Vision &amp; Imaging</span>
+        <span class="cv-role-inline">Teaching Assistant</span>
+        <span class="cv-dates">Sept. 2025 – Jan. 2026</span>
+      </div>
+
+      <div class="cv-entry cv-entry--inline">
+        <span class="cv-institution">Fundamentals of Digital Image Processing</span>
+        <span class="cv-role-inline">Teaching Assistant</span>
+        <span class="cv-dates">Sept. 2023 – Mar. 2024</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Academic Services (white) ── -->
+<section class="page-band band-white">
+  <div class="band-inner">
+    <h2 class="section-heading">Academic Services</h2>
+    <p class="cv-desc">Reviewer for:</p>
+    <ul class="cv-bullets">
+      <li>AI conferences including ECCV, ICCV, CVPR, NeurIPS, and ICML since 2022.</li>
+      <li>IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) in 2024 and 2025.</li>
+    </ul>
+  </div>
+</section>

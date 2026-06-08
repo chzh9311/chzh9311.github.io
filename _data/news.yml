@@ -1,0 +1,18 @@
+# _data/news.yml
+# Add new items at the TOP of the list (newest first)
+# Fields: date, text, link (optional), link_text (optional)
+
+- date: "Mar. 2026"
+  text: "I am selected as one of the finalists in "
+  link: "https://www.qualcomm.com/research/university-relations/innovation-fellowship"
+  link_text: "Qualcomm Innovation Fellowship 2026"
+
+- date: "Oct. 2025"
+  text: "One paper accepted by "
+  link: "https://aaai.org/conference/aaai/aaai-26/"
+  link_text: "AAAI'26"
+
+- date: "Jul. 2025"
+  text: "Our team won the essay competition of "
+  link: "https://iplab.dmi.unict.it/icvss2025/"
+  link_text: "ICVSS'25"

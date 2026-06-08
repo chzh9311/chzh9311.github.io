@@ -1,0 +1,48 @@
+# Site Settings
+title: Zhuo Chen
+description: Personal Academic Homepage
+url: "https://chzh9311.github.io"
+baseurl: ""
+
+# Author Info — edit these
+author:
+  name: Zhuo Chen
+  bio: >
+    I am a PhD student at [University Name](https://example.com), supervised by
+    [Prof. Name](https://example.com). My research focuses on computer vision and
+    3D human pose estimation.
+  email: ZXC417@student.bham.ac.uk
+  github: chzh9311
+  google_scholar: xfjQN98AAAAJ
+  cv_url: /cv/
+  avatar: /assets/img/avatar.jpg   # replace with your photo
+
+# Navigation
+nav_pages:
+  - title: About Me
+    url: /
+  - title: Publications
+    url: /publications/
+  - title: CV
+    url: /cv/
+
+# Include _pages directory
+include:
+  - _pages
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md

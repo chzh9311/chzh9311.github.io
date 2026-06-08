@@ -1,0 +1,88 @@
+---
+layout: default
+title: About Me
+permalink: /
+hide_nav: true
+---
+
+{% include hero.html %}
+
+<!-- ── About Me (white) ── -->
+<section class="page-band band-white">
+  <div class="band-inner">
+    <h2 class="section-heading">About Me</h2>
+    <div class="about-body">
+      <p>
+        I am a Ph.D. student at the Department of Computer Science in
+        <a href="https://www.birmingham.ac.uk/schools/computer-science" target="_blank" rel="noopener">University of Birmingham</a>,
+        UK. I am supervised by Prof.
+        <a href="https://hyungjinchang.wordpress.com/" target="_blank" rel="noopener">Hyung Jin Chang</a>
+        and Prof.
+        <a href="https://www.cs.bham.ac.uk/~leonarda/" target="_blank" rel="noopener">Aleš Leonardis</a>.
+        Before my Ph.D., I graduated from Shanghai Jiao Tong University, supervised by Prof.
+        <a href="https://automation.sjtu.edu.cn/Xu" target="_blank" rel="noopener">Xu Zhao</a>,
+        and was a member of
+        <a href="https://cvl.sjtu.edu.cn" target="_blank" rel="noopener">Computer Vision Lab</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── News (cream) ── -->
+<section class="page-band band-cream">
+  <div class="band-inner">
+    <h2 class="section-heading">News</h2>
+    <table class="news-table" aria-label="Recent news">
+      <tbody>
+        {% for item in site.data.news %}
+        <tr>
+          <td class="news-date">{{ item.date }}</td>
+          <td class="news-text">
+            {{ item.text }}{% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.link_text }}</a>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Publications (white) ── -->
+<section class="page-band band-white">
+  <div class="band-inner">
+    <h2 class="section-heading">Publications</h2>
+    <ol class="pub-list" reversed>
+      {% assign pubs = site.data.publications %}
+      {% for pub in pubs %}
+      <li class="pub-item">
+        <div class="pub-body">
+          <div class="pub-title">{{ pub.title }}</div>
+          <div class="pub-authors">
+            {% assign parts = pub.authors | split: "{self}" %}
+            {% if parts.size > 1 %}
+              {{ parts[0] }}<span class="self">{% assign rest = parts[1] | split: "," %}{{ rest[0] }}</span>{% assign rest2 = parts[1] | split: rest[0] %}{{ rest2[1] }}
+            {% else %}
+              {{ pub.authors }}
+            {% endif %}
+          </div>
+          <div class="pub-venue">{{ pub.venue }}</div>
+          <div class="pub-badges">
+            {% if pub.pdf and pub.pdf != "" %}
+              <a class="badge badge-pdf" href="{{ pub.pdf }}" target="_blank" rel="noopener">PDF</a>
+            {% endif %}
+            {% if pub.code and pub.code != "" %}
+              <a class="badge badge-code" href="{{ pub.code }}" target="_blank" rel="noopener">Code</a>
+            {% endif %}
+            {% if pub.page and pub.page != "" %}
+              <a class="badge badge-page" href="{{ pub.page }}" target="_blank" rel="noopener">Project</a>
+            {% endif %}
+            {% if pub.doi and pub.doi != "" %}
+              <a class="badge badge-pdf" href="{{ pub.doi }}" target="_blank" rel="noopener">DOI</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>

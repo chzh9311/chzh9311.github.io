@@ -1,0 +1,50 @@
+# _data/publications.yml — newest first
+# Use {self} immediately before your name to bold it
+
+- title: "Force-Aware 3D Contact Modeling for Stable Grasp Generation"
+  authors: "{self}Zhuo Chen, Zhongqun Zhang*, Yihua Cheng, Ales Leonardis, Hyung Jin Chang"
+  venue: "AAAI, 2026"
+  pdf: "https://arxiv.org/abs/2511.13247"
+  page: "https://chzh9311.github.io/force-aware-grasp-project"
+  code: ""
+  teaser: "/assets/img/teasers/fagrasp-aaai-teaser.png"
+
+- title: "AMDANet: Attention-Driven Multi-Perspective Discrepancy Alignment for RGB-Infrared Image Fusion and Segmentation"
+  authors: "Haifeng Zhong, Fan Tang, {self}Zhuo Chen, Hyung Jin Chang, Yixing Gao*"
+  venue: "ICCV, 2025"
+  pdf: "https://openaccess.thecvf.com/content/ICCV2025/html/Zhong_AMDANet_Attention-Driven_Multi-Perspective_Discrepancy_Alignment_for_RGB-Infrared_Image_Fusion_and_ICCV_2025_paper.html"
+  code: ""
+
+- title: "Rsb-pose: Robust Short-Baseline Binocular 3D Human Pose Estimation with Occlusion Handling"
+  authors: "Xiaoyue Wan, {self}Zhuo Chen, Xu Zhao*"
+  venue: "IEEE Transactions on Image Processing (TIP), 2025"
+  pdf: "https://ieeexplore.ieee.org/abstract/document/10770149/"
+  doi: "https://doi.org/10.1109/TIP.2024.3490401"
+  code: ""
+
+- title: "Dual-Diffusion for Binocular 3D Human Pose Estimation"
+  authors: "Xiaoyue Wan, {self}Zhuo Chen, Xu Zhao*, Bingzhi Duan"
+  venue: "NeurIPS, 2024"
+  pdf: "https://proceedings.neurips.cc/paper_files/paper/2024/hash/8ea50bf458f6070548b11babbe0bf89b-Abstract-Conference.html"
+  code: ""
+
+- title: "Joint-Limb Compound Triangulation With Co-Fixing for Stereoscopic Human Pose Estimation"
+  authors: "{self}Zhuo Chen, Xiaoyue Wan, Yiming Bao, Xu Zhao*"
+  venue: "IEEE Transactions on Multimedia (TMM), 2024"
+  pdf: "https://ieeexplore.ieee.org/abstract/document/10551483"
+  doi: "https://doi.org/10.1109/TMM.2024.3410514"
+  code: ""
+  teaser: "/assets/img/teasers/ctcf-tmm-teaser.png"
+
+- title: "View Consistency Aware Holistic Triangulation for 3D Human Pose Estimation"
+  authors: "Xiaoyue Wan, {self}Zhuo Chen, Xu Zhao*"
+  venue: "Computer Vision and Image Understanding (CVIU), 2023"
+  pdf: "https://www.sciencedirect.com/science/article/abs/pii/S1077314223002102"
+  code: ""
+
+- title: "Structural Triangulation: A Closed-Form Solution to Constrained 3D Human Pose Estimation"
+  authors: "{self}Zhuo Chen, Xu Zhao*, Xiaoyue Wan"
+  venue: "European Conference on Computer Vision (ECCV), 2022"
+  pdf: "https://link.springer.com/chapter/10.1007/978-3-031-20065-6_40"
+  code: ""
+  teaser: "/assets/img/teasers/st-eccv-teaser.png"

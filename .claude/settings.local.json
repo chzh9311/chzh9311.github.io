@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /home/chzh9311/personal_website/old_ver/images/profile.jpg /home/chzh9311/personal_website/personal-site/assets/img/avatar.jpg)"
+    ],
+    "additionalDirectories": [
+      "/home/chzh9311/personal_website/old_ver/images"
+    ]
+  }
+}
