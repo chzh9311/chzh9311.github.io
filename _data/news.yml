@@ -2,6 +2,16 @@
 # Add new items at the TOP of the list (newest first)
 # Fields: date, text, link (optional), link_text (optional)
 
+- date: "Sept. 2026"
+  text: "One paper accpted by "
+  link: "https://neurips.cc/Conferences/2026"
+  link_text: "NeurIPS'26"
+
+- date: "Jun. 2026"
+  text: "I will be co-organizing the "
+  link: "https://hands-workshop.org/workshop2026.html"
+  link_text: "DexHANDS@ECCV'26 Workshop"
+
 - date: "Mar. 2026"
   text: "I am selected as one of the finalists in "
   link: "https://www.qualcomm.com/research/university-relations/innovation-fellowship"

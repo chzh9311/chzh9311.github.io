@@ -13,7 +13,7 @@ hide_nav: true
     <h2 class="section-heading">About Me</h2>
     <div class="about-body">
       <p>
-        I am a Ph.D. student at the Department of Computer Science in
+        I am a Ph.D. student in <a href="https://cvlab-uob.github.io/">Human-Centred Vision Lab</a> at School of Computer Science in
         <a href="https://www.birmingham.ac.uk/schools/computer-science" target="_blank" rel="noopener">University of Birmingham</a>,
         UK. I am supervised by Prof.
         <a href="https://hyungjinchang.wordpress.com/" target="_blank" rel="noopener">Hyung Jin Chang</a>
@@ -32,18 +32,14 @@ hide_nav: true
 <section class="page-band band-cream">
   <div class="band-inner">
     <h2 class="section-heading">News</h2>
-    <table class="news-table" aria-label="Recent news">
-      <tbody>
-        {% for item in site.data.news %}
-        <tr>
-          <td class="news-date">{{ item.date }}</td>
-          <td class="news-text">
-            {{ item.text }}{% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.link_text }}</a>{% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <ul class="news-list" aria-label="Recent news">
+      {% for item in site.data.news %}
+      <li class="news-item">
+        <span class="news-date">{{ item.date }}</span>
+        <span class="news-text">{{ item.text }}{% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.link_text }}</a>{% endif %}</span>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
 </section>
 
@@ -55,6 +51,7 @@ hide_nav: true
       {% assign pubs = site.data.publications %}
       {% for pub in pubs %}
       <li class="pub-item">
+        {% if pub.teaser %}<img class="pub-teaser" src="{{ pub.teaser | relative_url }}" alt="{{ pub.title }}" />{% endif %}
         <div class="pub-body">
           <div class="pub-title">{{ pub.title }}</div>
           <div class="pub-authors">
