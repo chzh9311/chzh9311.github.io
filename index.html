@@ -47,9 +47,9 @@ hide_nav: true
 <section class="page-band band-white">
   <div class="band-inner">
     <h2 class="section-heading">Publications</h2>
-    <ol class="pub-list" reversed>
-      {% assign pubs = site.data.publications %}
-      {% for pub in pubs %}
+    {% assign first_pubs = site.data.publications | where: "first_author", true %}
+    <ol class="pub-list" reversed start="{{ first_pubs.size }}">
+      {% for pub in first_pubs %}
       <li class="pub-item">
         {% if pub.teaser %}<img class="pub-teaser" src="{{ pub.teaser | relative_url }}" alt="{{ pub.title }}" />{% endif %}
         <div class="pub-body">

@@ -7,22 +7,62 @@ hide_nav: true
 
 {% include hero.html %}
 
-<!-- ── Publications Band (white) ── -->
+<!-- ── First-Author Publications (white) ── -->
 <section class="page-band band-white">
   <div class="band-inner">
-    <h2 class="section-heading">Publications</h2>
+    <h2 class="section-heading">First-Author Papers</h2>
     {% if site.author.google_scholar %}
     <p class="scholar-link">
       Also on <a href="https://scholar.google.com/citations?user={{ site.author.google_scholar }}" target="_blank" rel="noopener">Google Scholar &rarr;</a>
     </p>
     {% endif %}
-    <ol class="pub-list" reversed>
-      {% assign pubs = site.data.publications %}
-      {% for pub in pubs %}
+    {% assign first_pubs = site.data.publications | where: "first_author", true %}
+    <ol class="pub-list" reversed start="{{ first_pubs.size }}">
+      {% for pub in first_pubs %}
       <li class="pub-item {% if pub.teaser %}pub-item--has-teaser{% endif %}">
         {% if pub.teaser %}
         <img class="pub-teaser" src="{{ pub.teaser | relative_url }}" alt="{{ pub.title }}" />
         {% endif %}
+        <div class="pub-body">
+          <div class="pub-title">{{ pub.title }}</div>
+          <div class="pub-authors">
+            {% assign parts = pub.authors | split: "{self}" %}
+            {% if parts.size > 1 %}
+              {{ parts[0] }}<span class="self">{% assign rest = parts[1] | split: "," %}{{ rest[0] }}</span>{% assign rest2 = parts[1] | split: rest[0] %}{{ rest2[1] }}
+            {% else %}
+              {{ pub.authors }}
+            {% endif %}
+          </div>
+          <div class="pub-venue">{{ pub.venue }}</div>
+          <div class="pub-badges">
+            {% if pub.pdf and pub.pdf != "" %}
+              <a class="badge badge-pdf" href="{{ pub.pdf }}" target="_blank" rel="noopener">PDF</a>
+            {% endif %}
+            {% if pub.code and pub.code != "" %}
+              <a class="badge badge-code" href="{{ pub.code }}" target="_blank" rel="noopener">Code</a>
+            {% endif %}
+            {% if pub.page and pub.page != "" %}
+              <a class="badge badge-page" href="{{ pub.page }}" target="_blank" rel="noopener">Project</a>
+            {% endif %}
+            {% if pub.doi and pub.doi != "" %}
+              <a class="badge badge-pdf" href="{{ pub.doi }}" target="_blank" rel="noopener">DOI</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ── Co-Authored Publications (cream) ── -->
+<section class="page-band band-cream">
+  <div class="band-inner">
+    <h2 class="section-heading">Co-Authored Papers</h2>
+    {% assign co_pubs = site.data.publications | where: "first_author", false %}
+    <ol class="pub-list" reversed start="{{ co_pubs.size }}">
+      {% for pub in co_pubs %}
+      <li class="pub-item">
         <div class="pub-body">
           <div class="pub-title">{{ pub.title }}</div>
           <div class="pub-authors">
